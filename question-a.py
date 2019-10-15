@@ -2,11 +2,16 @@ import numpy as np
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.datasets import fetch_openml
 
+# data stack for
+train_acc = []
+train_err = []
+valid_acc = []
+valid_err = []
 
 # Network model class.
 class NeuralNetwork:
     # config data.
-    TOTAL_EPOCH = 20
+    TOTAL_EPOCH = 40
     BATCH_SIZE = 1000
     LEARNING_RATE = 0.001
     SEED = 42
