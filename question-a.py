@@ -26,21 +26,22 @@ def plotting(train_acc, train_err, valdiate_acc, validate_err):
     ax1.set_ylim([0, 1])
     ax1.plot(train_acc, "r", label='train')
     ax1.plot(valdiate_acc, "g", label='test')
-    ax1.legend()
+    ax1.legend(loc='lower right')
 
     ax2.set_xlabel("loss")
-    ax2.set_ylim([0, 0.01])
-    ax2.plot(train_err, "r",label='train')
-    ax2.plot(validate_err, "g",label='test')
-    ax1.legend()
+    ax2.set_ylim([0, 0.03])
+    ax2.plot(train_err, "r", label='train')
+    ax2.plot(validate_err, "g", label='test')
+    ax2.legend(loc='upper right')
 
     plt.show()
 
+    # Network model class.
 
-# Network model class.
+
 class NeuralNetwork:
     # config data.
-    TOTAL_EPOCH = 60
+    TOTAL_EPOCH = 120
     BATCH_SIZE = 1000
     LEARNING_RATE = 0.001
     SEED = 42
@@ -72,9 +73,6 @@ class NeuralNetwork:
         modifiedX = x - np.max(x, 1).reshape([x.shape[0], 1])
         sigmoid = np.exp(modifiedX)
         return sigmoid / np.sum(sigmoid, axis=1).reshape([sigmoid.shape[0], 1])
-
-    def getCrossEntropy(self, predictY, labelY):
-        return np.mean(-np.sum(labelY * np.log(self.softmax(predictY)), axis=1))
 
     def feedForward_sigmoid(self, x):
         y1 = np.dot(x, self.w1)
@@ -118,7 +116,6 @@ class NeuralNetwork:
         return X[:NeuralNetwork.TRAIN_DATASET_SIZE], X[NeuralNetwork.TRAIN_DATASET_SIZE:], y[
                                                                                            :NeuralNetwork.TRAIN_DATASET_SIZE], y[
                                                                                                                                NeuralNetwork.TRAIN_DATASET_SIZE:]
-
     # print next batch.
     def next_batch(self, batch_size):
         x, y = self.X_train[self._i:self._i + batch_size], self.y_train[self._i: self._i + batch_size]
@@ -156,13 +153,12 @@ for i in range(NeuralNetwork.TOTAL_EPOCH):
     # shake data when epoch ended.
     network_model.shake_data()
 
-    # add one epoch data. just using 10000 data.
-    # because all dataset is too big.
-    _, _, y_train3 = network_model.feedForward_sigmoid(network_model.X_train[:NeuralNetwork.TEST_DATASET_SIZE])
+    # add one epoch data.
+    _, _, y_train3 = network_model.feedForward_sigmoid(network_model.X_train)
     match_prediction_train = np.equal(np.argmax(y_train3, axis=1),
-                                      np.argmax(network_model.y_train[:NeuralNetwork.TEST_DATASET_SIZE], axis=1))
+                                      np.argmax(network_model.y_train, axis=1))
     accuracy_train = np.mean(match_prediction_train)
-    match_loss_train = y_train3 - network_model.y_train[:NeuralNetwork.TEST_DATASET_SIZE]
+    match_loss_train = (1 / 2) * ((y_train3 - network_model.y_train) ** 2)
 
     train_acc.append(accuracy_train)
     train_err.append(np.mean(match_loss_train))
@@ -171,7 +167,7 @@ for i in range(NeuralNetwork.TOTAL_EPOCH):
     _, _, y_test3 = network_model.feedForward_sigmoid(network_model.X_test)
     match_prediction_test = np.equal(np.argmax(y_test3, axis=1), np.argmax(network_model.y_test, axis=1))
     accuracy_test = np.mean(match_prediction_test)
-    match_loss_test = y_test3 - network_model.y_test
+    match_loss_test = (1 / 2) * ((y_test3 - network_model.y_test) ** 2)
 
     valid_acc.append(accuracy_test)
     valid_err.append(np.mean(match_loss_test))
