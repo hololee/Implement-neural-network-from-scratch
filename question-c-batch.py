@@ -46,7 +46,9 @@ class NeuralNetwork:
     # config data.
     TOTAL_EPOCH = 500
     BATCH_SIZE = 60000
-    LEARNING_RATE = 0.0001
+    LEARNING_RATE = 0.000001
+    # LEARNING_RATE = 0.1
+    # LEARNING_RATE = 0.1/60000
     SEED = 42
     TRAIN_DATASET_SIZE = 60000
     TEST_DATASET_SIZE = 10000
@@ -57,9 +59,9 @@ class NeuralNetwork:
 
         # weight initialize
         # because of dying relu problem, divide to large number.
-        self.w1 = np.random.randn(784, 100) / 1000
-        self.w2 = np.random.randn(100, 50) / 1000
-        self.w3 = np.random.randn(50, 10) / 1000
+        self.w1 = np.random.randn(784, 100) / 10
+        self.w2 = np.random.randn(100, 50) / 10
+        self.w3 = np.random.randn(50, 10) / 10
         self.learningRate = learning_rate
 
         # load data using scikit-learn.
@@ -96,7 +98,7 @@ class NeuralNetwork:
         return activated_y1, activated_y2, softmax_result, back_relu_w1, back_relu_w2
 
     def backpropagation_sigmoid(self, x, labelY, predictY1, predictY2, predictY3, back_relu_w1, back_relu_w2):
-        e = predictY3 - labelY
+        e = (predictY3 - labelY)
         d_w3 = predictY2.T.dot(e)
         d_w2 = predictY1.T.dot(np.matmul(e, self.w3.T) * back_relu_w2)
         d_w1 = x.T.dot(np.matmul(np.matmul(e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
