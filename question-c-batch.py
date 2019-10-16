@@ -10,7 +10,7 @@ valid_acc = []
 valid_err = []
 
 
-# TODO : DYING ReLU PROBLEM.
+# TODO: LOCAL MINIMA PROBLEM, DYING RELU PROBLEM. so change the seed value.
 
 
 # plotting func.
@@ -44,9 +44,9 @@ def plotting(train_acc, train_err, valdiate_acc, validate_err):
 
 class NeuralNetwork:
     # config data.
-    TOTAL_EPOCH = 50
-    BATCH_SIZE = 1000
-    LEARNING_RATE = 0.0005
+    TOTAL_EPOCH = 500
+    BATCH_SIZE = 60000
+    LEARNING_RATE = 0.0001
     SEED = 42
     TRAIN_DATASET_SIZE = 60000
     TEST_DATASET_SIZE = 10000
@@ -82,12 +82,15 @@ class NeuralNetwork:
 
     def feedForward_sigmoid(self, x):
         y1 = np.dot(x, self.w1)
+        w1 = self.w1
         activated_y1, back_relu_w1 = self.relu(y1)
 
         y2 = np.dot(activated_y1, self.w2)
+        w2 = self.w2
         activated_y2, back_relu_w2 = self.relu(y2)
 
         y3 = np.dot(activated_y2, self.w3)
+        w2 = self.w3
         softmax_result = self.softmax(y3)
 
         return activated_y1, activated_y2, softmax_result, back_relu_w1, back_relu_w2
@@ -157,7 +160,7 @@ for i in range(NeuralNetwork.TOTAL_EPOCH):
     print("============== EPOCH {} END ================".format(i + 1))
 
     # shake data when epoch ended.
-    network_model.shake_data()
+    # network_model.shake_data()
 
     # add one epoch data.
     _, _, y_train3, _, _ = network_model.feedForward_sigmoid(network_model.X_train)

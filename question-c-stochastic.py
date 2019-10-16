@@ -10,8 +10,7 @@ valid_acc = []
 valid_err = []
 
 
-# TODO : DYING ReLU PROBLEM.
-
+# TODO: TOO MUCH TIME FOR CALCULATION.
 
 # plotting func.
 def plotting(train_acc, train_err, valdiate_acc, validate_err):
@@ -45,7 +44,7 @@ def plotting(train_acc, train_err, valdiate_acc, validate_err):
 class NeuralNetwork:
     # config data.
     TOTAL_EPOCH = 50
-    BATCH_SIZE = 1000
+    BATCH_SIZE = 1
     LEARNING_RATE = 0.0005
     SEED = 42
     TRAIN_DATASET_SIZE = 60000
@@ -144,7 +143,7 @@ network_model = NeuralNetwork(learning_rate=NeuralNetwork.LEARNING_RATE)
 for i in range(NeuralNetwork.TOTAL_EPOCH):
     print("============== EPOCH {} START ==============".format(i + 1))
     for j in range(NeuralNetwork.TRAIN_DATASET_SIZE // NeuralNetwork.BATCH_SIZE):
-        print("-------------- batch {} training...".format(j))
+        # print("-------------- batch {} training...".format(j))
         batch_x, batch_y = network_model.next_batch(NeuralNetwork.BATCH_SIZE)
 
         # TODO: feed-forward term.

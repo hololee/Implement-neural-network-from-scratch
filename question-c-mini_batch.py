@@ -10,9 +10,6 @@ valid_acc = []
 valid_err = []
 
 
-# TODO : DYING ReLU PROBLEM.
-
-
 # plotting func.
 def plotting(train_acc, train_err, valdiate_acc, validate_err):
     train_acc = np.array(train_acc)
