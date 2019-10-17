@@ -46,7 +46,7 @@ class NeuralNetwork:
     # config data.
     TOTAL_EPOCH = 500
     BATCH_SIZE = 60000
-    LEARNING_RATE = 0.000001
+    LEARNING_RATE = 0.01
     # LEARNING_RATE = 0.1
     # LEARNING_RATE = 0.1/60000
     SEED = 42
@@ -98,7 +98,7 @@ class NeuralNetwork:
         return activated_y1, activated_y2, softmax_result, back_relu_w1, back_relu_w2
 
     def backpropagation_sigmoid(self, x, labelY, predictY1, predictY2, predictY3, back_relu_w1, back_relu_w2):
-        e = (predictY3 - labelY)
+        e = (predictY3 - labelY)/ NeuralNetwork.BATCH_SIZE
         d_w3 = np.matmul(predictY2.T, e)
         d_w2 = np.matmul(predictY1.T, np.matmul(e, self.w3.T) * back_relu_w2)
         d_w1 = np.matmul(x.T, np.matmul(np.matmul(e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)

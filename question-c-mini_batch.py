@@ -90,7 +90,7 @@ class NeuralNetwork:
         return activated_y1, activated_y2, softmax_result, back_relu_w1, back_relu_w2
 
     def backpropagation_sigmoid(self, x, labelY, predictY1, predictY2, predictY3, back_relu_w1, back_relu_w2):
-        e = predictY3 - labelY
+        e = (predictY3 - labelY) / NeuralNetwork.BATCH_SIZE
         d_w3 = predictY2.T.dot(e)
         d_w2 = predictY1.T.dot(np.matmul(e, self.w3.T) * back_relu_w2)
         d_w1 = x.T.dot(np.matmul(np.matmul(e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)

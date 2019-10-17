@@ -9,6 +9,7 @@ train_err = []
 valid_acc = []
 valid_err = []
 
+
 # plotting func.
 def plotting(train_acc, train_err, valdiate_acc, validate_err):
     train_acc = np.array(train_acc)
@@ -86,7 +87,7 @@ class NeuralNetwork:
         return activated_y1, activated_y2, softmax_result
 
     def backpropagation_sigmoid(self, x, labelY, predictY1, predictY2, predictY3):
-        e = predictY3 - labelY
+        e = (predictY3 - labelY) / NeuralNetwork.BATCH_SIZE
         d_w3 = predictY2.T.dot(e)
         d_w2 = predictY1.T.dot(np.matmul(e, self.w3.T) * self.back_sigmoid(predictY2))
         d_w1 = x.T.dot(np.matmul(np.matmul(e, self.w3.T) * self.back_sigmoid(predictY2),
@@ -115,6 +116,7 @@ class NeuralNetwork:
         return X[:NeuralNetwork.TRAIN_DATASET_SIZE], X[NeuralNetwork.TRAIN_DATASET_SIZE:], y[
                                                                                            :NeuralNetwork.TRAIN_DATASET_SIZE], y[
                                                                                                                                NeuralNetwork.TRAIN_DATASET_SIZE:]
+
     # print next batch.
     def next_batch(self, batch_size):
         x, y = self.X_train[self._i:self._i + batch_size], self.y_train[self._i: self._i + batch_size]
