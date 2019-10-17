@@ -32,12 +32,54 @@ class NeuralNetwork:
             self.gt_w3 = np.zeros(self.w3.shape)
             self.eps = configure['epsilon']
 
+        if self.OPTIMIZER == OPTIMIZER_ADAM:
+            self.beta1 = configure['beta1']
+            self.beta2 = configure['beta2']
+            self.eps = configure['epsilon']
+
+            self.stacked_w1_mt = None
+            self.stacked_w2_mt = None
+            self.stacked_w3_mt = None
+            self.stacked_w1_mt_average = None
+            self.stacked_w2_mt_average = None
+            self.stacked_w3_mt_average = None
+
+            self.stacked_w1_vt = None
+            self.stacked_w2_vt = None
+            self.stacked_w3_vt = None
+            self.stacked_w1_vt_average = None
+            self.stacked_w2_vt_average = None
+            self.stacked_w3_vt_average = None
+
+    def exponentioal_moving_average_version_adam(self, previous_stacked_variables, previous_stacked_variable_averages,
+                                                 variables,
+                                                 calculate_type):
+        # stacked_weights shape = (i , x, y) x, y is weights,  i is stacked data.
+        n = len(previous_stacked_variables) + 1
+
+        if len(previous_stacked_variables) == 1:
+            prev_average_values = variables
+        else:
+            prev_average_values = previous_stacked_variable_averages
+
+        if calculate_type == 'mt':
+            # alpha = 2 / (n + 1) in normal exponentioal_moving_average case.
+            alpha = self.beta1
+            cur_average_values = (alpha * variables) + (1 - alpha) * prev_average_values
+        else:  # 'vt'
+            alpha = self.beta2
+            cur_average_values = (alpha * variables) + (1 - alpha) * (prev_average_values ** 2)
+        stacked_weights = np.concatenate((previous_stacked_variables, variables))
+
+        return stacked_weights, cur_average_values, alpha
+
     def sigmoid(self, x):
         return 1.0 / (1.0 + np.exp(-x))
 
     def back_sigmoid(self, x):
         return x * (1. - x)
 
+    # included back propagation.
     def relu(self, x):
         back_relu = np.zeros(x.shape)
         back_relu[np.where(x > 0)] = 1
@@ -120,8 +162,55 @@ class NeuralNetwork:
             self.w1 -= (self.LEARNING_RATE / np.sqrt(self.gt_w1 + self.eps)) * d_w1
             self.w2 -= (self.LEARNING_RATE / np.sqrt(self.gt_w2 + self.eps)) * d_w2
             self.w3 -= (self.LEARNING_RATE / np.sqrt(self.gt_w3 + self.eps)) * d_w3
+
         elif self.OPTIMIZER == OPTIMIZER_ADAM:
-            pass
+            # calculate w1
+            if self.stacked_w1_mt is None:
+                self.stacked_w1_mt = self.w1[np.newaxis, :]
+            self.stacked_w1_mt, self.stacked_w1_mt_average, alpha_w1_mt = self.exponentioal_moving_average_version_adam(
+                self.stacked_w1_mt, self.stacked_w1_mt_average, self.w1, 'mt')
+
+            if self.stacked_w1_vt is None:
+                self.stacked_w1_vt = self.w1[np.newaxis, :]
+            self.stacked_w1_vt, self.stacked_w1_vt_average, alpha_w1_vt = self.exponentioal_moving_average_version_adam(
+                self.stacked_w1_vt, self.stacked_w1_vt_average, self.w1, 'vt')
+
+            updated_w1_mt = self.stacked_w1_mt_average / (1 - alpha_w1_mt)
+            updated_w1_vt = self.stacked_w1_vt_average / (1 - alpha_w1_vt)
+
+            self.w1 -= (self.LEARNING_RATE / np.sqrt(updated_w1_vt + self.eps)) * updated_w1_mt
+
+            # calculate w2
+            if self.stacked_w2_mt is None:
+                self.stacked_w2_mt = self.w2[np.newaxis, :]
+            self.stacked_w2_mt, self.stacked_w2_mt_average, alpha_w2_mt = self.exponentioal_moving_average_version_adam(
+                self.stacked_w2_mt, self.stacked_w2_mt_average, self.w2, 'mt')
+
+            if self.stacked_w2_vt is None:
+                self.stacked_w2_vt = self.w2[np.newaxis, :]
+            self.stacked_w2_vt, self.stacked_w2_vt_average, alpha_w2_vt = self.exponentioal_moving_average_version_adam(
+                self.stacked_w2_vt, self.stacked_w2_vt_average, self.w2, 'vt')
+
+            updated_w2_mt = self.stacked_w2_mt_average / (1 - alpha_w2_mt)
+            updated_w2_vt = self.stacked_w2_vt_average / (1 - alpha_w2_vt)
+
+            self.w2 -= (self.LEARNING_RATE / np.sqrt(updated_w2_vt + self.eps)) * updated_w2_mt
+
+            # calculate w3
+            if self.stacked_w3_mt is None:
+                self.stacked_w3_mt = self.w3[np.newaxis, :]
+            self.stacked_w3_mt, self.stacked_w3_mt_average, alpha_w3_mt = self.exponentioal_moving_average_version_adam(
+                self.stacked_w3_mt, self.stacked_w3_mt_average, self.w3, 'mt')
+
+            if self.stacked_w3_vt is None:
+                self.stacked_w3_vt = self.w3[np.newaxis, :]
+            self.stacked_w3_vt, self.stacked_w3_vt_average, alpha_w3_vt = self.exponentioal_moving_average_version_adam(
+                self.stacked_w3_vt, self.stacked_w3_vt_average, self.w3, 'vt')
+
+            updated_w3_mt = self.stacked_w3_mt_average / (1 - alpha_w3_mt)
+            updated_w3_vt = self.stacked_w3_vt_average / (1 - alpha_w3_vt)
+
+            self.w3 -= (self.LEARNING_RATE / np.sqrt(updated_w3_vt + self.eps)) * updated_w3_mt
 
     def train(self, input, output):
         # TODO: feed-forward term.
