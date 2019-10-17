@@ -178,7 +178,7 @@ class NeuralNetwork:
             updated_w1_mt = self.stacked_w1_mt_average / (1 - alpha_w1_mt)
             updated_w1_vt = self.stacked_w1_vt_average / (1 - alpha_w1_vt)
 
-            self.w1 -= (self.LEARNING_RATE / np.sqrt(updated_w1_vt + self.eps)) * updated_w1_mt
+            self.w1 -= np.squeeze((self.LEARNING_RATE / np.sqrt(updated_w1_vt + self.eps)) * updated_w1_mt)
 
             # calculate w2
             if self.stacked_w2_mt is None:
@@ -194,7 +194,7 @@ class NeuralNetwork:
             updated_w2_mt = self.stacked_w2_mt_average / (1 - alpha_w2_mt)
             updated_w2_vt = self.stacked_w2_vt_average / (1 - alpha_w2_vt)
 
-            self.w2 -= (self.LEARNING_RATE / np.sqrt(updated_w2_vt + self.eps)) * updated_w2_mt
+            self.w2 -= np.squeeze((self.LEARNING_RATE / np.sqrt(updated_w2_vt + self.eps)) * updated_w2_mt)
 
             # calculate w3
             if self.stacked_w3_mt is None:
@@ -210,7 +210,7 @@ class NeuralNetwork:
             updated_w3_mt = self.stacked_w3_mt_average / (1 - alpha_w3_mt)
             updated_w3_vt = self.stacked_w3_vt_average / (1 - alpha_w3_vt)
 
-            self.w3 -= (self.LEARNING_RATE / np.sqrt(updated_w3_vt + self.eps)) * updated_w3_mt
+            self.w3 -= np.squeeze((self.LEARNING_RATE / np.sqrt(updated_w3_vt + self.eps)) * updated_w3_mt)
 
     def train(self, input, output):
         # TODO: feed-forward term.
