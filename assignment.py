@@ -44,10 +44,13 @@ config_assignmentD_ADAGRAD = {'total_epoch': 120, 'batch_size': 1000, 'learning_
 config_assignmentD_ADAM = {'total_epoch': 120, 'batch_size': 1000, 'learning_rate': 0.1, 'random_seed': 42,
                            'train_dataset_size': 60000, 'test_dataset_size': 10000,
                            'optimizer': nn.model.OPTIMIZER_ADAM,
-                           'activation': nn.model.ACTIVATE_RELU}
+                           'activation': nn.model.ACTIVATE_RELU,
+                           'beta1': 0.9,
+                           'beta2': 0.999,
+                           'epsilon': 1e-8}
 
 # define network nn.
-network_model = network(configure=config_assignmentD_ADAGRAD, h1=100, h2=50)
+network_model = network(configure=config_assignmentD_ADAM, h1=100, h2=50)
 dataManager = data_manager()
 
 # fix the random value.
