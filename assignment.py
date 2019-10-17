@@ -30,13 +30,13 @@ config_assignmentC_BATCH = {'total_epoch': 120, 'batch_size': 60000, 'learning_r
                             'optimizer': nn.model.OPTIMIZER_GD,
                             'activation': nn.model.ACTIVATE_RELU}
 
-config_assignmentC_STOCHASTIC = {'total_epoch': 120, 'batch_size': 1, 'learning_rate': 0.1, 'random_seed': 42,
+config_assignmentC_STOCHASTIC = {'total_epoch': 120, 'batch_size': 1, 'learning_rate': 0.05, 'random_seed': 42,
                                  'train_dataset_size': 60000, 'test_dataset_size': 10000,
                                  'optimizer': nn.model.OPTIMIZER_GD,
                                  'activation': nn.model.ACTIVATE_RELU}
 
 # define network nn.
-network_model = network(configure=config_assignmentC_BATCH)
+network_model = network(configure=config_assignmentC_STOCHASTIC)
 dataManager = data_manager()
 
 # fix the random value.
