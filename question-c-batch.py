@@ -99,9 +99,9 @@ class NeuralNetwork:
 
     def backpropagation_sigmoid(self, x, labelY, predictY1, predictY2, predictY3, back_relu_w1, back_relu_w2):
         e = (predictY3 - labelY)
-        d_w3 = predictY2.T.dot(e)
-        d_w2 = predictY1.T.dot(np.matmul(e, self.w3.T) * back_relu_w2)
-        d_w1 = x.T.dot(np.matmul(np.matmul(e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+        d_w3 = np.matmul(predictY2.T, e)
+        d_w2 = np.matmul(predictY1.T, np.matmul(e, self.w3.T) * back_relu_w2)
+        d_w1 = np.matmul(x.T, np.matmul(np.matmul(e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
 
         return d_w1, d_w2, d_w3
 
