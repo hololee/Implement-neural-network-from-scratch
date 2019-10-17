@@ -46,7 +46,7 @@ class NeuralNetwork:
     # config data.
     TOTAL_EPOCH = 50
     BATCH_SIZE = 1000
-    LEARNING_RATE = 0.0005
+    LEARNING_RATE = 0.1
     SEED = 42
     TRAIN_DATASET_SIZE = 60000
     TEST_DATASET_SIZE = 10000
@@ -57,9 +57,9 @@ class NeuralNetwork:
 
         # weight initialize
         # because of dying relu problem, divide to large number.
-        self.w1 = np.random.randn(784, 100) / 1000
-        self.w2 = np.random.randn(100, 50) / 1000
-        self.w3 = np.random.randn(50, 10) / 1000
+        self.w1 = np.random.randn(784, 100)
+        self.w2 = np.random.randn(100, 50)
+        self.w3 = np.random.randn(50, 10)
         self.learningRate = learning_rate
 
         # load data using scikit-learn.
