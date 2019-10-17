@@ -3,7 +3,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.datasets import fetch_openml
 
 
-# Network model class.
+# Network nn class.
 class NeuralNetwork:
     # config data.
     TOTAL_EPOCH = 15
@@ -51,9 +51,8 @@ class NeuralNetwork:
         return sigmoidY1, softmaxY2
 
     def backpropagation(self, x, labelY, predictY1, predictY2):
-        dW2 = predictY1.T.dot(predictY2 - labelY)
+        dW2 = predictY1.T.dot((predictY2 - labelY) / NeuralNetwork.BATCH_SIZE)
         dW1 = x.T.dot(np.matmul(predictY2 - labelY, self.W2.T) * self.back_sigmoid(predictY1))
-
 
         return dW1, dW2
 
@@ -93,7 +92,7 @@ class NeuralNetwork:
 # fix the random value.
 np.random.seed(NeuralNetwork.SEED)
 
-# define network model.
+# define network nn.
 network_model = NeuralNetwork(learning_rate=NeuralNetwork.LEARNING_RATE)
 
 # using mini-batch

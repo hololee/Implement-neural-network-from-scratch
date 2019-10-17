@@ -39,7 +39,7 @@ def plotting(train_acc, train_err, valdiate_acc, validate_err):
 
     plt.show()
 
-    # Network model class.
+    # Network nn class.
 
 
 class NeuralNetwork:
@@ -142,7 +142,7 @@ class NeuralNetwork:
 # fix the random value.
 np.random.seed(NeuralNetwork.SEED)
 
-# define network model.
+# define network nn.
 network_model = NeuralNetwork(learning_rate=NeuralNetwork.LEARNING_RATE)
 
 # using mini-batch
