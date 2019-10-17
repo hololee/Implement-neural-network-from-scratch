@@ -26,6 +26,12 @@ class NeuralNetwork:
         self.OPTIMIZER = configure['optimizer']
         self.ACTIVATION = configure['activation']
 
+        if self.OPTIMIZER == OPTIMIZER_ADAGRAD:
+            self.gt_w1 = np.zeros(self.w1.shape)
+            self.gt_w2 = np.zeros(self.w2.shape)
+            self.gt_w3 = np.zeros(self.w3.shape)
+            self.eps = configure['epsilon']
+
     def sigmoid(self, x):
         return 1.0 / (1.0 + np.exp(-x))
 
@@ -99,9 +105,23 @@ class NeuralNetwork:
         return d_w1, d_w2, d_w3
 
     def update_weight(self, d_w1, d_w2, d_w3):
-        self.w1 -= self.LEARNING_RATE * d_w1
-        self.w2 -= self.LEARNING_RATE * d_w2
-        self.w3 -= self.LEARNING_RATE * d_w3
+        if self.OPTIMIZER == OPTIMIZER_GD:
+            self.w1 -= self.LEARNING_RATE * d_w1
+            self.w2 -= self.LEARNING_RATE * d_w2
+            self.w3 -= self.LEARNING_RATE * d_w3
+
+        elif self.OPTIMIZER == OPTIMIZER_ADAGRAD:
+            # update the gt.
+            self.gt_w1 += np.square(d_w1 ** 2)
+            self.gt_w2 += np.square(d_w2 ** 2)
+            self.gt_w3 += np.square(d_w3 ** 2)
+
+            # change the learning rate for each weight.
+            self.w1 -= (self.LEARNING_RATE / np.sqrt(self.gt_w1 + self.eps)) * d_w1
+            self.w2 -= (self.LEARNING_RATE / np.sqrt(self.gt_w2 + self.eps)) * d_w2
+            self.w3 -= (self.LEARNING_RATE / np.sqrt(self.gt_w3 + self.eps)) * d_w3
+        elif self.OPTIMIZER == OPTIMIZER_ADAM:
+            pass
 
     def train(self, input, output):
         # TODO: feed-forward term.
