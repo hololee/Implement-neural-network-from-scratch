@@ -15,6 +15,9 @@ class NeuralNetwork:
         self.w2 = np.random.randn(h1, h2)
         self.w3 = np.random.randn(h2, 10)
 
+        # set configure.
+        self.configure = configure
+
         # config data.
         self.TOTAL_EPOCH = configure['total_epoch']
         self.BATCH_SIZE = configure['batch_size']

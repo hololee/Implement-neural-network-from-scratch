@@ -36,7 +36,7 @@ config_assignmentC_STOCHASTIC = {'total_epoch': 120, 'batch_size': 1, 'learning_
                                  'activation': nn.model.ACTIVATE_RELU}
 
 # define network nn.
-network_model = network(configure=config_assignmentC_STOCHASTIC)
+network_model = network(configure=config_assignmentC_BATCH)
 dataManager = data_manager()
 
 # fix the random value.
@@ -46,7 +46,8 @@ np.random.seed(network_model.SEED)
 for i in range(network_model.TOTAL_EPOCH):
     print("============== EPOCH {} START ==============".format(i + 1))
     for j in range(dataManager.train_dataset_size // network_model.BATCH_SIZE):
-        print("-------------- batch {} training...".format(j))
+        if network_model.configure != config_assignmentC_STOCHASTIC:
+            print("-------------- batch {} training...".format(j))
 
         # load batch data.
         batch_x, batch_y = dataManager.next_batch(network_model.BATCH_SIZE)
