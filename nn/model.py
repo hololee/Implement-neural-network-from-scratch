@@ -166,12 +166,12 @@ class NeuralNetwork:
         elif self.OPTIMIZER == OPTIMIZER_ADAM:
             # calculate w1
             if self.stacked_w1_mt is None:
-                self.stacked_w1_mt = self.w1[np.newaxis, :]
+                self.stacked_w1_mt = np.zeros(self.w1[np.newaxis, :].shape)
             self.stacked_w1_mt, self.stacked_w1_mt_average, alpha_w1_mt = self.exponentioal_moving_average_version_adam(
                 self.stacked_w1_mt, self.stacked_w1_mt_average, self.w1[np.newaxis, :], 'mt')
 
             if self.stacked_w1_vt is None:
-                self.stacked_w1_vt = self.w1[np.newaxis, :]
+                self.stacked_w1_vt = np.zeros(self.w1[np.newaxis, :].shape)
             self.stacked_w1_vt, self.stacked_w1_vt_average, alpha_w1_vt = self.exponentioal_moving_average_version_adam(
                 self.stacked_w1_vt, self.stacked_w1_vt_average, self.w1[np.newaxis, :], 'vt')
 
@@ -182,12 +182,12 @@ class NeuralNetwork:
 
             # calculate w2
             if self.stacked_w2_mt is None:
-                self.stacked_w2_mt = self.w2[np.newaxis, :]
+                self.stacked_w2_mt = np.zeros(self.w2[np.newaxis, :].shape)
             self.stacked_w2_mt, self.stacked_w2_mt_average, alpha_w2_mt = self.exponentioal_moving_average_version_adam(
                 self.stacked_w2_mt, self.stacked_w2_mt_average, self.w2[np.newaxis, :], 'mt')
 
             if self.stacked_w2_vt is None:
-                self.stacked_w2_vt = self.w2[np.newaxis, :]
+                self.stacked_w2_vt = np.zeros(self.w2[np.newaxis, :].shape)
             self.stacked_w2_vt, self.stacked_w2_vt_average, alpha_w2_vt = self.exponentioal_moving_average_version_adam(
                 self.stacked_w2_vt, self.stacked_w2_vt_average, self.w2[np.newaxis, :], 'vt')
 
@@ -198,12 +198,12 @@ class NeuralNetwork:
 
             # calculate w3
             if self.stacked_w3_mt is None:
-                self.stacked_w3_mt = self.w3[np.newaxis, :]
+                self.stacked_w3_mt = np.zeros(self.w3[np.newaxis, :].shape)
             self.stacked_w3_mt, self.stacked_w3_mt_average, alpha_w3_mt = self.exponentioal_moving_average_version_adam(
                 self.stacked_w3_mt, self.stacked_w3_mt_average, self.w3[np.newaxis, :], 'mt')
 
             if self.stacked_w3_vt is None:
-                self.stacked_w3_vt = self.w3[np.newaxis, :]
+                self.stacked_w3_vt = np.zeros(self.w3[np.newaxis, :].shape)
             self.stacked_w3_vt, self.stacked_w3_vt_average, alpha_w3_vt = self.exponentioal_moving_average_version_adam(
                 self.stacked_w3_vt, self.stacked_w3_vt_average, self.w3[np.newaxis, :], 'vt')
 
