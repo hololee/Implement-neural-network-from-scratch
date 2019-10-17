@@ -41,7 +41,7 @@ config_assignmentD_ADAGRAD = {'total_epoch': 120, 'batch_size': 1000, 'learning_
                               'activation': nn.model.ACTIVATE_RELU,
                               'epsilon': 1e-5}
 
-config_assignmentD_ADAM = {'total_epoch': 120, 'batch_size': 1000, 'learning_rate': 0.001, 'random_seed': 42,
+config_assignmentD_ADAM = {'total_epoch': 120, 'batch_size': 1000, 'learning_rate': 0.01, 'random_seed': 42,
                            'train_dataset_size': 60000, 'test_dataset_size': 10000,
                            'optimizer': nn.model.OPTIMIZER_ADAM,
                            'activation': nn.model.ACTIVATE_RELU,

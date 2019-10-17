@@ -65,8 +65,7 @@ class NeuralNetwork:
     def softmax(self, x):
         if x.ndim == 1:
             x = x.reshape([1, x.size])
-        modifiedX = x - np.max(x, 1).reshape([x.shape[0], 1])
-        sigmoid = np.exp(modifiedX)
+        sigmoid = np.exp(x)
         return sigmoid / np.sum(sigmoid, axis=1).reshape([sigmoid.shape[0], 1])
 
     def feedForward(self, x):
