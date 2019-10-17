@@ -5,7 +5,6 @@ import numpy as np
 
 class DataManager:
     def __init__(self):
-
         # for batch count.
         self._i = 0
 
@@ -15,6 +14,10 @@ class DataManager:
 
         # load data using scikit-learn.
         self.X_train, self.X_test, self.y_train, self.y_test = self.load_data(one_hot=True)
+
+        # change range 0 to 1.
+        self.X_train = self.X_train / 255
+        self.X_test = self.X_test / 255
 
     def load_data(self, one_hot=True):
         print("loading data...")

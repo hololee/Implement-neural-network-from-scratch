@@ -11,9 +11,9 @@ class NeuralNetwork:
 
     def __init__(self, configure, h1=100, h2=50):
         # weight initialize
-        self.w1 = np.random.randn(784, h1) / 10
-        self.w2 = np.random.randn(h1, h2) / 10
-        self.w3 = np.random.randn(h2, 10) / 10
+        self.w1 = np.random.randn(784, h1)
+        self.w2 = np.random.randn(h1, h2)
+        self.w3 = np.random.randn(h2, 10)
 
         # config data.
         self.TOTAL_EPOCH = configure['total_epoch']
