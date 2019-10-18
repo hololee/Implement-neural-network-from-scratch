@@ -62,7 +62,7 @@ dataManager = data_manager()
 
 <br/>
 
-Training network is simple. just load the batch data, and run **train()** methiod  
+Training network is simple. just load the batch data, and run **train()** function.  
 Train method _update all weights one time_ because understand how can back-porpagation work in network. So just use kind of `for loop` for train the network.
 ~~~
 # load batch data.
