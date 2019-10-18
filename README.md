@@ -42,7 +42,7 @@ _This project can be divided to 4 parts_
  
 ---
  
-<h3>structure of `assignment.py`</h3>
+<h3>structure of assignment.py</h3>
 
 First, setting the params for data using config dic data.   
 This config has many params and you can change the `epoch`, `learning_rate`, `batch_size`, `activation`, `optimizer`, etc...  
