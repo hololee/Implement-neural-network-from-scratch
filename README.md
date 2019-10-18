@@ -182,7 +182,11 @@ def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w
   Calculate weights update.
   
   _If the optimizer is Adagrad, calculate the additional params gt for all weights.  
-  If the optimizer is Adam, calculate the additional params mt, vt for all weights._
+  If the optimizer is Adam, calculate the additional params mt, vt for all weights._  
+  
+  
+  ![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/algorithm-01.png?raw=true)  
+  
   
  ~~~
 def update_weight(self, d_w1, d_w2, d_w3):
