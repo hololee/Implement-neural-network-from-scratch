@@ -42,14 +42,15 @@ _This project can be divided to 4 parts_
 ---
  
 <h3>structure of model.py</h3>
-In the `model.py` scripts, many functions for training are located.  
------------------------
+In the `model.py` scripts, many functions for training are located. 
+ 
+---
 1. Initialize model  
 2. Sigmoid activation model  
 3. ReLU activation model  
 4. Feedforward & backpropagation calculate  
 5. Update calculate (gradient-descent, Adagrad, Adam)  
------------------------
+---
 
 
  - Initialize model 
