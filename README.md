@@ -59,6 +59,7 @@ Next, define network_model and load dataManager.
 network_model = network(configure=config_assignmentD_ADAM, h1=100, h2=50)
 dataManager = data_manager()
 ~~~
+![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/network-01.png?raw=true)  
 
 <br/>
 
