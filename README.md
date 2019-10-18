@@ -114,7 +114,7 @@ result.
 ============== EPOCH 50 END ================
 train accuracy : 0.9062; loss : 0.00738, test accuracy : 0.908; loss : 0.00719                                         
 ~~~
-![Result of assigmentA]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_a.png?raw=true")  
+![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_a.png?raw=true)  
 
 
 - network_assignment_B(mini-batch, Relu activation)
@@ -134,7 +134,7 @@ result.
 ============== EPOCH 50 END ================
 train accuracy : 0.973; loss : 0.00211, test accuracy : 0.963; loss : 0.00275
 ~~~
-![Result of assigmentB]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_b.png?raw=true")  
+![Result of assigmentB](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_b.png?raw=true)  
 
 
 - network_assignment_C_1(mini-batch, Relu activation)
@@ -155,7 +155,7 @@ result.
 ============== EPOCH 50 END ================
 train accuracy : 0.973; loss : 0.00212, test accuracy : 0.964; loss : 0.0027
 ~~~
-![Result of assigmentC_1]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_c_1.png?raw=true")
+![Result of assigmentC_1](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_c_1.png?raw=true)
 
 - network_assignment_C_2(batch, Relu activation)
 ~~~
@@ -173,7 +173,7 @@ result.
 ============== EPOCH 80 END ================
 train accuracy : 0.843; loss : 0.0129, test accuracy : 0.849; loss : 0.0125
 ~~~
-![Result of assigmentC_2]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_c_2.png?raw=true")
+![Result of assigmentC_2](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_c_2.png?raw=true)
 
 - network_assignment_C_3(stochastic batch, Relu activation): **Too long time spend for train!!**
 ~~~
@@ -190,7 +190,7 @@ result.
 ============== EPOCH 30 END ================
 train accuracy : 0.9895; loss : 0.000797, test accuracy : 0.974; loss : 0.00212
 ~~~
-![Result of assigmentC_3]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_c_3.png?raw=true")
+![Result of assigmentC_3](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_c_3.png?raw=true)
 
 - network_assignment_D_1(mini batch, Relu activation, Adagrad)
 ~~~
@@ -211,7 +211,7 @@ result.
 ============== EPOCH 30 END ================
 train accuracy : 0.9968; loss : 0.000328, test accuracy : 0.978; loss : 0.00168
 ~~~
-![Result of assigmentD_1]("./images/plot_a.png")
+![Result of assigmentD_1](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_d_1.png?raw=true)
 
 
 - network_assignment_D_2(mini batch, Relu activation, Adam)
@@ -236,6 +236,6 @@ result.
 train accuracy : 0.9946; loss : 0.000423, test accuracy : 0.974; loss : 0.0023
 
 ~~~
-![Result of assigmentD_2]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_d_2.png?raw=true")
+![Result of assigmentD_2](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_d_2.png?raw=true)
 
  
