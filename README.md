@@ -38,6 +38,198 @@ _This project can be divided to 4 parts_
   └─ -ema_test.py : Before constructing the Adam optimizer, i need to understand how calculat the Expotential moving average.
                     This is the test of caculating the ema. 
 ~~~
+ 
+---
+ 
+<h3>structure of model.py</h3>
+In the `model.py` scripts, many functions for training are located.  
+-----------------------
+1. Initialize model
+2. Sigmoid activation model
+3. ReLU activation model
+4. Feedforward & backpropagation calculate
+5. Update calculate (gradient-descent, Adagrad, Adam)
+-----------------------
+
+
+ - Initialize model 
+ First, setting network by the user configuration.  
+ If use the `Adagrad` or `Adam` optimizer, initialize additional params.
+ ~~~
+# weight initialize
+self.w1 = np.random.randn(784, h1) / 10
+self.w2 = np.random.randn(h1, h2) / 10
+self.w3 = np.random.randn(h2, 10) / 10
+
+# set configure.
+self.configure = configure
+
+# config data.
+self.TOTAL_EPOCH = configure['total_epoch']
+self.BATCH_SIZE = configure['batch_size']
+self.LEARNING_RATE = configure['learning_rate']
+self.SEED = configure['random_seed']
+self.OPTIMIZER = configure['optimizer']
+self.ACTIVATION = configure['activation']
+
+if self.OPTIMIZER == OPTIMIZER_ADAGRAD:
+    self.gt_w1 = np.zeros(self.w1.shape)
+    self.gt_w2 = np.zeros(self.w2.shape)
+    self.gt_w3 = np.zeros(self.w3.shape)
+    self.eps = configure['epsilon']
+
+if self.OPTIMIZER == OPTIMIZER_ADAM:
+    self.beta1 = configure['beta1']
+    self.beta2 = configure['beta2']
+    self.eps = configure['epsilon']
+
+    # for calculate beta.
+    self.counts = 1
+
+    self.mt_w1 = np.zeros(self.w1.shape)
+    self.vt_w1 = np.zeros(self.w1.shape)
+
+    self.mt_w2 = np.zeros(self.w2.shape)
+    self.vt_w2 = np.zeros(self.w2.shape)
+
+    self.mt_w3 = np.zeros(self.w3.shape)
+    self.vt_w3 = np.zeros(self.w3.shape)
+ ~~~  
+ 
+ 
+ - Sigmoid activation model  
+ This is for calculate `sigmoid` feedfoward and derivative of sigmoid.
+ ~~~
+def sigmoid(self, x):
+    return 1.0 / (1.0 + np.exp(-x))
+
+def back_sigmoid(self, x):
+    return x * (1. - x)
+ ~~~  
+ 
+  - ReLU activation model  
+ This is for calculate `relu` feedfoward and derivative of sigmoid.
+ ~~~
+# included back propagation.
+def relu(self, x):
+    back_relu = np.zeros(x.shape)
+    back_relu[np.where(x > 0)] = 1
+    x[np.where(x <= 0)] = 0
+    
+    return x, back_relu
+ ~~~
+ 
+   - Feedforward & backpropagation calculate  
+ Every one iteration do one feedforward and one backpropagation.  
+ After that **update the weights**.   
+ Activate function affect to caculate the feedforward and backpropagation, so divide the source by the activate type.
+ ~~~.
+def feedForward(self, x):
+    y1 = np.dot(x, self.w1)
+    if self.ACTIVATION == ACTIVATE_SIGMOID:
+        activated_y1 = self.sigmoid(y1)
+        back_relu_w1 = None
+    elif self.ACTIVATION == ACTIVATE_RELU:
+        activated_y1, back_relu_w1 = self.relu(y1)
+    else:
+        activated_y1 = self.sigmoid(y1)
+        back_relu_w1 = None
+
+    y2 = np.dot(activated_y1, self.w2)
+    if self.ACTIVATION == ACTIVATE_SIGMOID:
+        activated_y2 = self.sigmoid(y2)
+        back_relu_w2 = None
+    elif self.ACTIVATION == ACTIVATE_RELU:
+        activated_y2, back_relu_w2 = self.relu(y2)
+    else:
+        activated_y2 = self.sigmoid(y2)
+        back_relu_w2 = None
+
+    y3 = np.dot(activated_y2, self.w3)
+    softmax_result = self.softmax(y3)
+
+    return activated_y1, activated_y2, softmax_result, back_relu_w1, back_relu_w2
+
+def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w2):
+    d_e = (out3 - labelY) / self.BATCH_SIZE
+
+    # calculate d_w3
+    d_w3 = out2.T.dot(d_e)
+
+    # calculate d_w2
+    if self.ACTIVATION == ACTIVATE_SIGMOID:
+        d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2))
+    elif self.ACTIVATION == ACTIVATE_RELU:
+        d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
+    else:
+        d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2))
+
+    # calculate d_w1
+    if self.ACTIVATION == ACTIVATE_SIGMOID:
+        d_w1 = x.T.dot(
+            np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(out1))
+    elif self.ACTIVATION == ACTIVATE_RELU:
+        d_w1 = x.T.dot(np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+    else:
+        d_w1 = x.T.dot(
+            np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(out1))
+
+    # return changed value.
+    return d_w1, d_w2, d_w3
+ ~~~
+ 
+   - Update calculate (gradient-descent, Adagrad, Adam)  
+  Calculate weights update.
+  
+  _If the optimizer is Adagrad, calculate the additional params gt for all weights.  
+  If the optimizer is Adam, calculate the additional params mt, vt for all weights._
+  
+ ~~~
+def update_weight(self, d_w1, d_w2, d_w3):
+    if self.OPTIMIZER == OPTIMIZER_GD:
+        self.w1 -= self.LEARNING_RATE * d_w1
+        self.w2 -= self.LEARNING_RATE * d_w2
+        self.w3 -= self.LEARNING_RATE * d_w3
+
+    elif self.OPTIMIZER == OPTIMIZER_ADAGRAD:
+        # update the gt.
+        self.gt_w1 += np.square(d_w1 ** 2)
+        self.gt_w2 += np.square(d_w2 ** 2)
+        self.gt_w3 += np.square(d_w3 ** 2)
+
+        # change the learning rate for each weight.
+        self.w1 -= (self.LEARNING_RATE / np.sqrt(self.gt_w1 + self.eps)) * d_w1
+        self.w2 -= (self.LEARNING_RATE / np.sqrt(self.gt_w2 + self.eps)) * d_w2
+        self.w3 -= (self.LEARNING_RATE / np.sqrt(self.gt_w3 + self.eps)) * d_w3
+
+    elif self.OPTIMIZER == OPTIMIZER_ADAM:
+
+        self.mt_w1 = (self.beta1 * self.mt_w1) + ((1 - self.beta1) * d_w1)
+        self.vt_w1 = (self.beta2 * self.vt_w1) + ((1 - self.beta2) * (d_w1 ** 2))
+
+        self.mt_w1 = self.mt_w1 / (1 - self.beta1)
+        self.vt_w1 = self.vt_w1 / (1 - self.beta2)
+
+        self.mt_w2 = (self.beta1 * self.mt_w2) + ((1 - self.beta1) * d_w2)
+        self.vt_w2 = (self.beta2 * self.vt_w2) + ((1 - self.beta2) * (d_w2 ** 2))
+
+        self.mt_w2 = self.mt_w2 / (1 - self.beta1)
+        self.vt_w2 = self.vt_w2 / (1 - self.beta2)
+
+        self.mt_w3 = (self.beta1 * self.mt_w3) + ((1 - self.beta1) * d_w3)
+        self.vt_w3 = (self.beta2 * self.vt_w3) + ((1 - self.beta2) * (d_w3 ** 2))
+
+        self.mt_w3 = self.mt_w3 / (1 - self.beta1)
+        self.vt_w3 = self.vt_w3 / (1 - self.beta2)
+
+        self.counts += 1
+        self.beta1 = 2 / (self.counts + 1)
+        self.beta2 = 2 / (self.counts + 1)
+
+        self.w1 -= (self.LEARNING_RATE / np.sqrt(self.vt_w1 + self.eps)) * self.mt_w1
+        self.w2 -= (self.LEARNING_RATE / np.sqrt(self.vt_w2 + self.eps)) * self.mt_w2
+        self.w3 -= (self.LEARNING_RATE / np.sqrt(self.vt_w3 + self.eps)) * self.mt_w3
+ ~~~
 
  
 ---
