@@ -211,7 +211,7 @@ result.
 ============== EPOCH 30 END ================
 train accuracy : 0.9968; loss : 0.000328, test accuracy : 0.978; loss : 0.00168
 ~~~
-![Result of assigmentD_1]("https://github.com/hololee/assignment-mid-term/blob/master/images/plot_d_1.png?raw=true")
+![Result of assigmentD_1]("./images/plot_a.png")
 
 
 - network_assignment_D_2(mini batch, Relu activation, Adam)
