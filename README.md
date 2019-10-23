@@ -315,6 +315,27 @@ train accuracy : 0.9062; loss : 0.00738, test accuracy : 0.908; loss : 0.00719
 ![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_a.png?raw=true)  
 
 
+- network_assignment_A_with_MOMENTUM(mini-batch, sigmoid activation)
+~~~
+config_assignmentA_MOMENTUM = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1, 'random_seed': 42,
+                               'train_dataset_size': 60000, 'test_dataset_size': 10000, 'momentum': 0.9,
+                               'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                               'activation': nn.model.ACTIVATE_SIGMOID}
+                      
+       
+result.   
+--------------------------------------------
+-------------- batch 56 training...
+-------------- batch 57 training...
+-------------- batch 58 training...
+-------------- batch 59 training...
+============== EPOCH 50 END ================
+train accuracy : 0.982; loss : 0.00144, test accuracy : 0.972; loss : 0.00213
+~~~
+![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/plot_a_momentum.png?raw=true)  
+
+
+
 - network_assignment_B(mini-batch, Relu activation)
 ~~~
 config_assignmentB = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1, 'random_seed': 42,
