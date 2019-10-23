@@ -1,6 +1,7 @@
 import numpy as np
 
 OPTIMIZER_GD = "gradient_descent"
+OPTIMIZER_GD_MOMENTUM = "gradient_descent_using_momentum"
 OPTIMIZER_ADAM = "adam"
 OPTIMIZER_ADAGRAD = "adagrad"
 ACTIVATE_RELU = "relu"
@@ -9,11 +10,17 @@ ACTIVATE_SIGMOID = "sigmoid"
 
 class NeuralNetwork:
 
-    def __init__(self, configure, h1=100, h2=50):
+    def __init__(self, configure, h1=100, h2=50, momentum=0.7):
         # weight initialize
         self.w1 = np.random.randn(784, h1) / 10
         self.w2 = np.random.randn(h1, h2) / 10
         self.w3 = np.random.randn(h2, 10) / 10
+
+        # momenum
+        self.momentum = momentum
+        self.prev_dW1 = np.zeros(shape=[784, h1])
+        self.prev_dW2 = np.zeros(shape=[h1, h2])
+        self.prev_dW3 = np.zeros(shape=[h2, 10])
 
         # set configure.
         self.configure = configure
@@ -121,11 +128,18 @@ class NeuralNetwork:
         # return changed value.
         return d_w1, d_w2, d_w3
 
-    def update_weight(self, d_w1, d_w2, d_w3):
+    def update_weight(self, d_w1, d_w2, d_w3, using_momentum):
         if self.OPTIMIZER == OPTIMIZER_GD:
             self.w1 -= self.LEARNING_RATE * d_w1
             self.w2 -= self.LEARNING_RATE * d_w2
             self.w3 -= self.LEARNING_RATE * d_w3
+
+        elif self.OPTIMIZER == OPTIMIZER_GD_MOMENTUM:
+
+            self.w1 += (-1 * self.LEARNING_RATE * d_w1) + (self.momentum * self.prev_dW1)
+            self.w2 += (-1 * self.LEARNING_RATE * d_w2) + (self.momentum * self.prev_dW2)
+            self.w3 += (-1 * self.LEARNING_RATE * d_w3) + (self.momentum * self.prev_dW3)
+
 
         elif self.OPTIMIZER == OPTIMIZER_ADAGRAD:
             # update the gt.
@@ -166,12 +180,18 @@ class NeuralNetwork:
             self.w2 -= (self.LEARNING_RATE / np.sqrt(self.vt_w2 + self.eps)) * self.mt_w2
             self.w3 -= (self.LEARNING_RATE / np.sqrt(self.vt_w3 + self.eps)) * self.mt_w3
 
-    def train(self, input, output):
+    def train(self, input, output, using_momentum=False):
         # TODO: feed-forward term.
         y1, y2, y3, back_relu_w1, back_relu_w2 = self.feedForward(input)
         # TODO: back-propagation term.
         dW1, dW2, dW3 = self.backpropagation(input, output, y1, y2, y3, back_relu_w1, back_relu_w2)
-        self.update_weight(dW1, dW2, dW3)
+        self.update_weight(dW1, dW2, dW3, using_momentum)
+
+        # momentum
+        if (using_momentum):
+            self.prev_dW1 = dW1
+            self.prev_dW2 = dW2
+            self.prev_dW3 = dW3
 
     def predict(self, input):
         _, _, output, _, _ = self.feedForward(input)
