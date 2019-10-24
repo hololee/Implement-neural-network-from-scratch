@@ -86,21 +86,19 @@ class NeuralNetwork:
             if self.ACTIVATION == ACTIVATE_SIGMOID:
                 activated_y1 = self.sigmoid(y1)
                 back_relu_w1 = None
-                y2 = np.dot(activated_y1, self.w2)
-                activated_y2 = self.sigmoid(y2)
-                back_relu_w2 = None
-                y3 = np.dot(activated_y2, self.w3)
-                result = self.softmax(y3)
-                back_relu_w3 = None
-
             elif self.ACTIVATION == ACTIVATE_RELU:
                 activated_y1, back_relu_w1 = self.relu(y1)
-                y2 = np.dot(activated_y1, self.w2)
-                activated_y2, back_relu_w2 = self.relu(y2)
-                y3 = np.dot(activated_y2, self.w3)
-                result = self.softmax(y3)
-                back_relu_w3 = None
 
+            y2 = np.dot(activated_y1, self.w2)
+            if self.ACTIVATION == ACTIVATE_SIGMOID:
+                activated_y2 = self.sigmoid(y2)
+                back_relu_w2 = None
+            elif self.ACTIVATION == ACTIVATE_RELU:
+                activated_y2, back_relu_w2 = self.relu(y2)
+
+            y3 = np.dot(activated_y2, self.w3)
+            result = self.softmax(y3)
+            back_relu_w3 = None
 
         elif self.LOSS == LOSS_MSE:
             y1 = np.dot(x, self.w1)

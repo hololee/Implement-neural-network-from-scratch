@@ -13,8 +13,8 @@ valid_err = []
 
 # config list.
 INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 80,
-                                   'batch_size': 60000,
-                                   'learning_rate': 1e-1,
+                                   'batch_size': 10000,
+                                   'learning_rate': 1e-3,
                                    'random_seed': 42,
                                    'train_dataset_size': 60000,
                                    'test_dataset_size': 10000,
@@ -140,7 +140,7 @@ for i in range(network_model.TOTAL_EPOCH):
     print("============== EPOCH {} END ================".format(i + 1))
 
     # shake data when epoch ended.
-    dataManager.shake_data()
+    # dataManager.shake_data()
 
     # calculate accuracy and loss
     output_train = network_model.predict(dataManager.X_train)
