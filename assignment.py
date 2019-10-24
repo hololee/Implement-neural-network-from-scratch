@@ -13,8 +13,8 @@ valid_err = []
 
 # config list.
 INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 80,
-                                   'batch_size': 10000,
-                                   'learning_rate': 1e-3,
+                                   'batch_size': 1000,
+                                   'learning_rate': 1e-1,
                                    'random_seed': 42,
                                    'train_dataset_size': 60000,
                                    'test_dataset_size': 10000,
