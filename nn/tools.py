@@ -21,7 +21,7 @@ def plotting(train_acc, train_err, valdiate_acc, validate_err):
     ax1.legend(loc='lower right')
 
     ax2.set_xlabel("loss")
-    ax2.set_ylim([0, 0.03])
+    ax2.set_ylim([0, 0.3])
     ax2.plot(train_err, "r", label='train')
     ax2.plot(validate_err, "g", label='test')
     ax2.legend(loc='upper right')

@@ -30,6 +30,9 @@ class DataManager:
             one_hot = OneHotEncoder()
             y = one_hot.fit_transform(y.reshape(-1, 1))
             y = y.toarray()
+            # y[np.where(y == 0)] = 0.01
+            # y[np.where(y == 1)] = 0.99
+
             print("y are one-hot encoded..")
 
         return X[:self.train_dataset_size], X[self.train_dataset_size:], y[:self.train_dataset_size], y[
