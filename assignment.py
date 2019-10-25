@@ -12,20 +12,19 @@ valid_acc = []
 valid_err = []
 
 # config list.
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 80,
-                                   'batch_size': 1000,
-                                   'learning_rate': 1e-1,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 500,
+                                   'batch_size': 60000,
+                                   'learning_rate': 1e-5,
                                    'random_seed': 42,
                                    'train_dataset_size': 60000,
                                    'test_dataset_size': 10000,
-                                   'momentum': 0.9,
+                                   'momentum': 0.7,
                                    # 'beta1': 0.9,
                                    # 'beta2': 0.999,
                                    # 'epsilon': 1e-8,
                                    'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
                                    'activation': nn.model.ACTIVATE_SIGMOID,
                                    'loss': nn.model.LOSS_MSE}
-
 
 
 # set config.
@@ -83,7 +82,7 @@ current_config = INFO_SIGMOID_MOMENTUM_MSE_BATCH
 #                                         'epsilon': 1e-8}
 
 # define network nn.
-network_model = network(configure=current_config, h1=100, h2=50, init_weight=10)
+network_model = network(configure=current_config, h1=100, h2=50, init_weight=1)
 dataManager = data_manager()
 
 # fix the random value.
@@ -123,8 +122,8 @@ for i in range(network_model.TOTAL_EPOCH):
             if j % 10 == 0:
                 # save data.
                 # calculate accuracy and loss
-                output_train = network_model.predict(batch_x)
-                accuracy_train, loss_train = network_model.getAccuracyAndLoss(output_train, batch_y)
+                output_train = network_model.predict(dataManager.X_train)
+                accuracy_train, loss_train = network_model.getAccuracyAndLoss(output_train, dataManager.y_train)
 
                 # add data to stack
                 train_acc.append(accuracy_train)

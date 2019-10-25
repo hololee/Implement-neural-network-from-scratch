@@ -19,6 +19,16 @@ class DataManager:
         self.X_train = self.X_train / 255
         self.X_test = self.X_test / 255
 
+        self.X_train[np.where(self.X_train == 0)] = 0.01
+        self.X_train[np.where(self.X_train == 1)] = 0.999
+        self.X_test[np.where(self.X_test == 0)] = 0.01
+        self.X_test[np.where(self.X_test == 1)] = 0.999
+        self.y_train[np.where(self.y_train == 0)] = 0.01
+        self.y_train[np.where(self.y_train == 1)] = 0.999
+        self.y_test[np.where(self.y_test == 0)] = 0.01
+        self.y_test[np.where(self.y_test == 1)] = 0.999
+
+
     def load_data(self, one_hot=True):
         print("loading data...")
 
@@ -30,9 +40,6 @@ class DataManager:
             one_hot = OneHotEncoder()
             y = one_hot.fit_transform(y.reshape(-1, 1))
             y = y.toarray()
-            # y[np.where(y == 0)] = 0.01
-            # y[np.where(y == 1)] = 0.99
-
             print("y are one-hot encoded..")
 
         return X[:self.train_dataset_size], X[self.train_dataset_size:], y[:self.train_dataset_size], y[
