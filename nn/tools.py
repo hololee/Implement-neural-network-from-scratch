@@ -3,7 +3,7 @@ import numpy as np
 
 
 # plotting func.
-def plotting(train_acc, train_err, valdiate_acc, validate_err):
+def plotting(title, train_acc, train_err, valdiate_acc, validate_err):
     train_acc = np.array(train_acc)
     train_err = np.array(train_err)
     valdiate_acc = np.array(valdiate_acc)
@@ -26,4 +26,5 @@ def plotting(train_acc, train_err, valdiate_acc, validate_err):
     ax2.plot(validate_err, "g", label='test')
     ax2.legend(loc='upper right')
 
+    fig.suptitle('learning_rate :{}'.format(title))
     plt.show()

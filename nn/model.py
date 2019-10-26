@@ -156,14 +156,16 @@ class NeuralNetwork:
                 # calculate d_w1
                 d_w1 = x.T.dot(
                     np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(out1))
-                d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(
-                    out1))
+                d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                    np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(
+                        out1))
 
             elif self.ACTIVATION == ACTIVATE_RELU:
                 d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
                 d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
                 d_w1 = x.T.dot(np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
-                d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                    np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
 
         elif self.LOSS == LOSS_MSE:
             e = -(out3 - labelY)
@@ -303,8 +305,8 @@ class NeuralNetwork:
             # cross entropy loss
             loss = -np.mean(output * np.log(output_of_model) + (1 - output) * np.log(1 - output_of_model))
         elif self.LOSS == LOSS_MSE:
-            # l2
-            loss = np.mean((1 / 2) * ((output_of_model - output) ** 2))
+            # MSE
+            loss = (1 / 2) * np.mean(((output_of_model - output) ** 2))
         else:
             loss = None
 
