@@ -27,6 +27,7 @@ class DataManager:
         self.y_train[np.where(self.y_train == 1)] = 0.999
         self.y_test[np.where(self.y_test == 0)] = 0.01
         self.y_test[np.where(self.y_test == 1)] = 0.999
+        pass
 
 
     def load_data(self, one_hot=True):

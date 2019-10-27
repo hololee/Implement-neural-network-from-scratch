@@ -12,19 +12,27 @@ valid_acc = []
 valid_err = []
 
 # config list.
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 600,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1200,
                                    'batch_size': 60000,
-                                   'learning_rate': 1e-4,
+                                   'learning_rate': 1e-6,
                                    'random_seed': 42,
                                    'train_dataset_size': 60000,
                                    'test_dataset_size': 10000,
-                                   'momentum': 0.9,
-                                   # 'beta1': 0.9,
-                                   # 'beta2': 0.999,
-                                   # 'epsilon': 1e-8,
+                                   'momentum': 0.8,
                                    'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
                                    'activation': nn.model.ACTIVATE_SIGMOID,
                                    'loss': nn.model.LOSS_MSE}
+
+INFO_SIGMOID_GD_MSE_MINIBATCH = {'total_epoch': 1000,
+                                 'batch_size': 1000,
+                                 'learning_rate': 1e-4,
+                                 'random_seed': 42,
+                                 'train_dataset_size': 60000,
+                                 'test_dataset_size': 10000,
+                                 'momentum': 0.8,
+                                 'optimizer': nn.model.OPTIMIZER_GD,
+                                 'activation': nn.model.ACTIVATE_SIGMOID,
+                                 'loss': nn.model.LOSS_MSE}
 
 # set config.
 current_config = INFO_SIGMOID_MOMENTUM_MSE_BATCH
@@ -81,11 +89,11 @@ current_config = INFO_SIGMOID_MOMENTUM_MSE_BATCH
 #                                         'epsilon': 1e-8}
 
 # define network nn.
-network_model = network(configure=current_config, h1=256, h2=256, init_weight=1)
+network_model = network(configure=current_config, h1=256, h2=256, init_weight=10)
 dataManager = data_manager()
 
 # fix the random value.
-np.random.seed(network_model.SEED)
+# np.random.seed(network_model.SEED)
 
 # using mini-batch
 for i in range(network_model.TOTAL_EPOCH):
@@ -150,5 +158,7 @@ for i in range(network_model.TOTAL_EPOCH):
 
     print("train accuracy : {:.4}; loss : {:.3}, test accuracy : {:.3}; loss : {:.3}".format(accuracy_train, loss_train,
                                                                                              accuracy_test, loss_test))
-    # draw graph.
-    tool.plotting(current_config['learning_rate'], train_acc, train_err, valid_acc, valid_err)
+
+    if i % 10 == 0 or i == network_model.TOTAL_EPOCH - 1:
+        # draw graph.
+        tool.plotting(current_config['learning_rate'], train_acc, train_err, valid_acc, valid_err)

@@ -168,7 +168,7 @@ class NeuralNetwork:
                     np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
 
         elif self.LOSS == LOSS_MSE:
-            e = -(out3 - labelY)
+            e = (out3 - labelY)
             if self.ACTIVATION == ACTIVATE_SIGMOID:
                 # calculate d_w3
                 d_w3 = out2.T.dot(e * self.back_sigmoid(out3))
@@ -183,6 +183,20 @@ class NeuralNetwork:
                 d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
                     np.dot(np.dot(e * self.back_sigmoid(out3), self.w3.T) * self.back_sigmoid(out2),
                            self.w2.T) * self.back_sigmoid(out1))
+
+                # calculate d_w3 with init_weight10
+                # d_w3 = out2.T.dot(e * self.back_sigmoid(out3))
+                # d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * self.back_sigmoid(out3))
+                # # calculate d_w2
+                # d_w2 = out1.T.dot(np.dot(e, self.w3.T) * self.back_sigmoid(out2))
+                # d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                #     np.dot(e, self.w3.T) * self.back_sigmoid(out2))
+                # # calculate d_w1
+                # d_w1 = x.T.dot(np.dot(np.dot(e, self.w3.T),
+                #                       self.w2.T) * self.back_sigmoid(out1))
+                # d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                #     np.dot(np.dot(e, self.w3.T),
+                #            self.w2.T) * self.back_sigmoid(out1))
 
             elif self.ACTIVATION == ACTIVATE_RELU:
                 # calculate d_w3
@@ -216,12 +230,12 @@ class NeuralNetwork:
             self.prev_db2 = (self.MOMENTUM * self.prev_db2) + (self.LEARNING_RATE * d_b2)
             self.prev_db3 = (self.MOMENTUM * self.prev_db3) + (self.LEARNING_RATE * d_b3)
 
-            self.w1 += self.prev_dW1
-            self.w2 += self.prev_dW2
-            self.w3 += self.prev_dW3
-            self.b1 += self.prev_db1
-            self.b2 += self.prev_db2
-            self.b3 += self.prev_db3
+            self.w1 -= self.prev_dW1
+            self.w2 -= self.prev_dW2
+            self.w3 -= self.prev_dW3
+            self.b1 -= self.prev_db1
+            self.b2 -= self.prev_db2
+            self.b3 -= self.prev_db3
 
 
         elif self.OPTIMIZER == OPTIMIZER_ADAGRAD:
@@ -298,8 +312,7 @@ class NeuralNetwork:
         return output
 
     def getAccuracyAndLoss(self, output_of_model, output):
-        accuracy = np.mean(np.equal(np.argmax(output_of_model, axis=1),
-                                    np.argmax(output, axis=1)))
+        accuracy = np.mean(np.equal(np.argmax(output_of_model, axis=1), np.argmax(output, axis=1)))
 
         if self.LOSS == LOSS_CROSSENTROPY:
             # cross entropy loss
