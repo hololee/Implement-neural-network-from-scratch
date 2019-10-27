@@ -23,19 +23,20 @@ INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
                                    'activation': nn.model.ACTIVATE_SIGMOID,
                                    'loss': nn.model.LOSS_MSE}
 
-INFO_SIGMOID_GD_MSE_MINIBATCH = {'total_epoch': 1000,
-                                 'batch_size': 1000,
-                                 'learning_rate': 1e-4,
-                                 'random_seed': 42,
-                                 'train_dataset_size': 60000,
-                                 'test_dataset_size': 10000,
-                                 'momentum': 0.8,
-                                 'optimizer': nn.model.OPTIMIZER_GD,
-                                 'activation': nn.model.ACTIVATE_SIGMOID,
-                                 'loss': nn.model.LOSS_MSE}
+#3e-8
+INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
+                          'batch_size': 60000,
+                          'learning_rate': 1e-6,
+                          'random_seed': 42,
+                          'train_dataset_size': 60000,
+                          'test_dataset_size': 10000,
+                          'momentum': 0.8,
+                          'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                          'activation': nn.model.ACTIVATE_RELU,
+                          'loss': nn.model.LOSS_MSE}
 
 # set config.
-current_config = INFO_SIGMOID_MOMENTUM_MSE_BATCH
+current_config = INFO_RELU_GD_MSE_BATCH
 
 #
 # config_assignmentA_MOMENTUM_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1,
@@ -89,7 +90,7 @@ current_config = INFO_SIGMOID_MOMENTUM_MSE_BATCH
 #                                         'epsilon': 1e-8}
 
 # define network nn.
-network_model = network(configure=current_config, h1=256, h2=256, init_weight=10)
+network_model = network(configure=current_config, h1=256, h2=256)
 dataManager = data_manager()
 
 # fix the random value.

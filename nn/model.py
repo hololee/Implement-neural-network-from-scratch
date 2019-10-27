@@ -6,21 +6,21 @@ OPTIMIZER_ADAM = "adam"
 OPTIMIZER_ADAGRAD = "adagrad"
 ACTIVATE_RELU = "relu"
 ACTIVATE_SIGMOID = "sigmoid"
-LOSS_MSE = "l2"
+LOSS_MSE = "mse"
 LOSS_CROSSENTROPY = "cross_entropy"
 
 
 class NeuralNetwork:
 
-    def __init__(self, configure, h1=100, h2=50, init_weight=10):
-        # weight initialize
-        self.w1 = np.random.randn(784, h1) / init_weight
-        self.w2 = np.random.randn(h1, h2) / init_weight
-        self.w3 = np.random.randn(h2, 10) / init_weight
+    def __init__(self, configure, h1=100, h2=50):
+        # weight initialize : Xavier initialization
+        self.w1 = np.random.randn(784, h1) / np.sqrt(784)
+        self.w2 = np.random.randn(h1, h2) / np.sqrt(h1)
+        self.w3 = np.random.randn(h2, 10) / np.sqrt(h2)
 
-        self.b1 = np.random.randn(1, h1) / init_weight
-        self.b2 = np.random.randn(1, h2) / init_weight
-        self.b3 = np.random.randn(1, 10) / init_weight
+        self.b1 = np.random.randn(1, h1) / np.sqrt(784)
+        self.b2 = np.random.randn(1, h2) / np.sqrt(h1)
+        self.b3 = np.random.randn(1, 10) / np.sqrt(h2)
 
         # set configure.
         self.configure = configure
@@ -77,71 +77,81 @@ class NeuralNetwork:
             self.vt_b3 = np.zeros(self.b3.shape)
 
     def sigmoid(self, x):
-        return 1.0 / (1.0 + np.exp(-x))
+        array = np.copy(x)
+        return 1.0 / (1.0 + np.exp(-array))
 
     def back_sigmoid(self, x):
-        return x * (1 - x)
+        array = np.copy(x)
+        return array * (1 - array)
 
     # included back propagation.
     def relu(self, x):
-        back_relu = np.zeros(x.shape)
-        back_relu[np.where(x > 0)] = 1
-        x[np.where(x <= 0)] = 0
-        return x, back_relu
+        array = np.copy(x)
+        array[array < 0] = 0
+        return array
+
+    def back_relu(self, x):
+        array = np.copy(x)
+        array[array >= 0] = 1
+        array[array < 0] = 0
+        return array
 
     def softmax(self, x):
-        if x.ndim == 1:
-            x = x.reshape([1, x.size])
-        sigmoid = np.exp(x)
-        return sigmoid / np.sum(sigmoid, axis=1).reshape([sigmoid.shape[0], 1])
+        array = np.copy(x)
+        if array.ndim == 1:
+            array = array.reshape([1, array.size])
+        exps = np.exp(array)
+        return exps / np.sum(exps, axis=1).reshape([exps.shape[0], 1])
 
     def feedForward(self, x):
-        global activated_y1, activated_y2, result, back_relu_w1, back_relu_w2, activated_y3, back_relu_w3
+
         if self.LOSS == LOSS_CROSSENTROPY:
             y1 = np.dot(x, self.w1) + self.b1
             if self.ACTIVATION == ACTIVATE_SIGMOID:
                 activated_y1 = self.sigmoid(y1)
-                back_relu_w1 = None
+
                 y2 = np.dot(activated_y1, self.w2) + self.b2
                 activated_y2 = self.sigmoid(y2)
-                back_relu_w2 = None
+
                 y3 = np.dot(activated_y2, self.w3) + self.b3
                 result = self.softmax(y3)
-                back_relu_w3 = None
+
+                return activated_y1, activated_y2, result
 
             elif self.ACTIVATION == ACTIVATE_RELU:
-                activated_y1, back_relu_w1 = self.relu(y1)
+                activated_y1 = self.relu(y1)
                 y2 = np.dot(activated_y1, self.w2) + self.b2
-                activated_y2, back_relu_w2 = self.relu(y2)
+                activated_y2 = self.relu(y2)
                 y3 = np.dot(activated_y2, self.w3) + self.b3
                 result = self.softmax(y3)
-                back_relu_w3 = None
+
+                return activated_y1, activated_y2, result
 
         elif self.LOSS == LOSS_MSE:
             y1 = np.dot(x, self.w1) + self.b1
             if self.ACTIVATION == ACTIVATE_SIGMOID:
                 activated_y1 = self.sigmoid(y1)
-                back_relu_w1 = None
+
                 y2 = np.dot(activated_y1, self.w2) + self.b2
                 activated_y2 = self.sigmoid(y2)
-                back_relu_w2 = None
+
                 y3 = np.dot(activated_y2, self.w3) + self.b3
                 activated_y3 = self.sigmoid(y3)
-                back_relu_w3 = None
                 result = activated_y3
+
+                return activated_y1, activated_y2, result
 
             elif self.ACTIVATION == ACTIVATE_RELU:
-                activated_y1, back_relu_w1 = self.relu(y1)
+                activated_y1 = self.relu(y1)
                 y2 = np.dot(activated_y1, self.w2) + self.b2
-                activated_y2, back_relu_w2 = self.relu(y2)
+                activated_y2 = self.relu(y2)
                 y3 = np.dot(activated_y2, self.w3) + self.b3
-                activated_y3, back_relu_w3 = self.relu(y3)
+                activated_y3 = self.relu(y3)
                 result = activated_y3
 
-        return activated_y1, activated_y2, result, back_relu_w1, back_relu_w2, back_relu_w3
+                return activated_y1, activated_y2, result
 
-    def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w2, back_relu_w3):
-        global d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
+    def backpropagation(self, x, labelY, out1, out2, out3):
 
         if self.LOSS == LOSS_CROSSENTROPY:
             d_e = (out3 - labelY)
@@ -159,13 +169,18 @@ class NeuralNetwork:
                 d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
                     np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(
                         out1))
+                return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
             elif self.ACTIVATION == ACTIVATE_RELU:
-                d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
-                d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
-                d_w1 = x.T.dot(np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * self.back_relu(out2))
+                d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                    np.matmul(d_e, self.w3.T) * self.back_relu(out2))
+                d_w1 = x.T.dot(np.matmul(np.matmul(d_e, self.w3.T) * self.back_relu(out2),
+                                         self.w2.T) * self.back_relu(out1))
                 d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-                    np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                    np.matmul(np.matmul(d_e, self.w3.T) * self.back_relu(out2),
+                              self.w2.T) * self.back_relu(out1))
+                return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
         elif self.LOSS == LOSS_MSE:
             e = (out3 - labelY)
@@ -184,33 +199,26 @@ class NeuralNetwork:
                     np.dot(np.dot(e * self.back_sigmoid(out3), self.w3.T) * self.back_sigmoid(out2),
                            self.w2.T) * self.back_sigmoid(out1))
 
-                # calculate d_w3 with init_weight10
-                # d_w3 = out2.T.dot(e * self.back_sigmoid(out3))
-                # d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * self.back_sigmoid(out3))
-                # # calculate d_w2
-                # d_w2 = out1.T.dot(np.dot(e, self.w3.T) * self.back_sigmoid(out2))
-                # d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-                #     np.dot(e, self.w3.T) * self.back_sigmoid(out2))
-                # # calculate d_w1
-                # d_w1 = x.T.dot(np.dot(np.dot(e, self.w3.T),
-                #                       self.w2.T) * self.back_sigmoid(out1))
-                # d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-                #     np.dot(np.dot(e, self.w3.T),
-                #            self.w2.T) * self.back_sigmoid(out1))
+                return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
             elif self.ACTIVATION == ACTIVATE_RELU:
                 # calculate d_w3
-                d_w3 = out2.T.dot(e * back_relu_w3)
-                d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * back_relu_w3)
+                d_w3 = out2.T.dot(e * self.back_relu(out3))
+                d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * self.back_relu(out3))
                 # calculate d_w2
-                d_w2 = out1.T.dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2)
-                d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2)
+                d_w2 = out1.T.dot(
+                    np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(out2))
+                d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                    np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(out2))
                 # calculate d_w1
-                d_w1 = x.T.dot(np.dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                d_w1 = x.T.dot(np.dot(
+                    np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(out2),
+                    self.w2.T) * self.back_relu(out1))
                 d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-                    np.dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                    np.dot(np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(
+                        out2), self.w2.T) * self.back_relu(out1))
 
-        return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
+                return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
     def update_weight(self, d_w1, d_w2, d_w3, d_b1, d_b2, d_b3):
         if self.OPTIMIZER == OPTIMIZER_GD:
@@ -220,7 +228,6 @@ class NeuralNetwork:
             self.b1 -= self.LEARNING_RATE * d_b1
             self.b2 -= self.LEARNING_RATE * d_b2
             self.b3 -= self.LEARNING_RATE * d_b3
-
 
         elif self.OPTIMIZER == OPTIMIZER_GD_MOMENTUM:
             self.prev_dW1 = (self.MOMENTUM * self.prev_dW1) + (self.LEARNING_RATE * d_w1)
@@ -236,7 +243,6 @@ class NeuralNetwork:
             self.b1 -= self.prev_db1
             self.b2 -= self.prev_db2
             self.b3 -= self.prev_db3
-
 
         elif self.OPTIMIZER == OPTIMIZER_ADAGRAD:
             # update the gt.
@@ -301,10 +307,9 @@ class NeuralNetwork:
 
     def train(self, input, output):
         # TODO: feed-forward term.
-        y1, y2, y3, back_relu_w1, back_relu_w2, back_relu_w3 = self.feedForward(input)
+        y1, y2, y3 = self.feedForward(input)
         # TODO: back-propagation term.
-        dW1, dW2, dW3, db1, db2, db3 = self.backpropagation(input, output, y1, y2, y3, back_relu_w1, back_relu_w2,
-                                                            back_relu_w3)
+        dW1, dW2, dW3, db1, db2, db3 = self.backpropagation(input, output, y1, y2, y3)
         self.update_weight(dW1, dW2, dW3, db1, db2, db3)
 
     def predict(self, input):
