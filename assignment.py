@@ -12,7 +12,7 @@ valid_acc = []
 valid_err = []
 
 # config list.
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 3000,
                                    'batch_size': 60000,
                                    'learning_rate': 1e-6,
                                    'random_seed': 42,
@@ -23,7 +23,7 @@ INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
                                    'activation': nn.model.ACTIVATE_SIGMOID,
                                    'loss': nn.model.LOSS_MSE}
 
-#3e-8
+#1e-6 working well
 INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'batch_size': 60000,
                           'learning_rate': 1e-6,
