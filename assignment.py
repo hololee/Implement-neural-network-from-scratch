@@ -12,7 +12,7 @@ valid_acc = []
 valid_err = []
 
 # config list.
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1200,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
                                    'batch_size': 60000,
                                    'learning_rate': 1e-6,
                                    'random_seed': 42,

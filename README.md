@@ -424,7 +424,7 @@ def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w
 First, setting the params for data using config dic data.   
 This config has many params and you can change the `epoch`, `learning_rate`, `batch_size`, `activation`, `optimizer`, etc...  
 ~~~
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1200,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
                                    'batch_size': 60000,
                                    'learning_rate': 1e-6,
                                    'random_seed': 42,
@@ -482,9 +482,9 @@ dataManager = data_manager()
 ~~~
 
 
-- network_assignment_A(mini-batch, sigmoid activation)
+- network_assignment_A(batch, sigmoid activation, MSE loss, momentum)
 ~~~
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1200,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
                                    'batch_size': 60000,
                                    'learning_rate': 1e-6,
                                    'random_seed': 42,
