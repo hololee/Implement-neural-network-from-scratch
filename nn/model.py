@@ -313,8 +313,8 @@ class NeuralNetwork:
         self.update_weight(dW1, dW2, dW3, db1, db2, db3)
 
     def predict(self, input):
-        _, _, output, _, _, _ = self.feedForward(input)
-        return output
+        output = self.feedForward(input)
+        return output[2]
 
     def getAccuracyAndLoss(self, output_of_model, output):
         accuracy = np.mean(np.equal(np.argmax(output_of_model, axis=1), np.argmax(output, axis=1)))

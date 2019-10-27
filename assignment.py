@@ -36,7 +36,7 @@ INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'loss': nn.model.LOSS_MSE}
 
 # set config.
-current_config = INFO_RELU_GD_MSE_BATCH
+current_config = INFO_SIGMOID_MOMENTUM_MSE_BATCH
 
 #
 # config_assignmentA_MOMENTUM_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1,
