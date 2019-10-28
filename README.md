@@ -472,7 +472,7 @@ train accuracy : 0.8768; loss : 0.0125, test accuracy : 0.883; loss : 0.0121
 ~~~
 ![Result of assigmentA](./images/INFO_SIGMOID_MOMENTUM_MSE_BATCH.png)  
 
-- network_assignment_B(batch, Relu activation, MSE loss, momentum)
+- network_assignment_B(batch, ReLU activation, MSE loss, momentum)
 ~~~
 INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'batch_size': 60000,
