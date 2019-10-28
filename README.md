@@ -1,7 +1,9 @@
 <h1>Assignment-mid-term</h1>  
 
-_+updated(19.10.24) : printed loss is changed to cross-entropy loss and momentum updated. and printed loss can be changed to MSE._
-_+updated(19.10.27) : Add bias._
+_+ updated(19.10.27) : Update test results and figures._  
+_+ updated(19.10.26) : Add bias and MSE loss function to NetworkModel._  
+_+ updated(19.10.24) : printed loss is changed form `MSE` to `Crossentropy` loss and momentum updated. and printed loss can be changed to MSE._
+   
 
 Build a neural network using python **without any machine-learning platform.**
   
@@ -152,100 +154,56 @@ def relu(self, x):
  Every one iteration do one feedforward and one backpropagation.  
  After that **update the weights**.   
  Activate function affect to caculate the feedforward and backpropagation, so divide the source by the activate type.
- ~~~.
+ ~~~
 def feedForward(self, x):
-    global activated_y1, activated_y2, result, back_relu_w1, back_relu_w2, activated_y3, back_relu_w3
+
     if self.LOSS == LOSS_CROSSENTROPY:
         y1 = np.dot(x, self.w1) + self.b1
         if self.ACTIVATION == ACTIVATE_SIGMOID:
             activated_y1 = self.sigmoid(y1)
-            back_relu_w1 = None
+
             y2 = np.dot(activated_y1, self.w2) + self.b2
             activated_y2 = self.sigmoid(y2)
-            back_relu_w2 = None
+
             y3 = np.dot(activated_y2, self.w3) + self.b3
             result = self.softmax(y3)
-            back_relu_w3 = None
+
+            return activated_y1, activated_y2, result
 
         elif self.ACTIVATION == ACTIVATE_RELU:
-            activated_y1, back_relu_w1 = self.relu(y1)
+            activated_y1 = self.relu(y1)
             y2 = np.dot(activated_y1, self.w2) + self.b2
-            activated_y2, back_relu_w2 = self.relu(y2)
+            activated_y2 = self.relu(y2)
             y3 = np.dot(activated_y2, self.w3) + self.b3
             result = self.softmax(y3)
-            back_relu_w3 = None
+
+            return activated_y1, activated_y2, result
 
     elif self.LOSS == LOSS_MSE:
         y1 = np.dot(x, self.w1) + self.b1
         if self.ACTIVATION == ACTIVATE_SIGMOID:
             activated_y1 = self.sigmoid(y1)
-            back_relu_w1 = None
+
             y2 = np.dot(activated_y1, self.w2) + self.b2
             activated_y2 = self.sigmoid(y2)
-            back_relu_w2 = None
+
             y3 = np.dot(activated_y2, self.w3) + self.b3
             activated_y3 = self.sigmoid(y3)
-            back_relu_w3 = None
             result = activated_y3
+
+            return activated_y1, activated_y2, result
 
         elif self.ACTIVATION == ACTIVATE_RELU:
-            activated_y1, back_relu_w1 = self.relu(y1)
+            activated_y1 = self.relu(y1)
             y2 = np.dot(activated_y1, self.w2) + self.b2
-            activated_y2, back_relu_w2 = self.relu(y2)
+            activated_y2 = self.relu(y2)
             y3 = np.dot(activated_y2, self.w3) + self.b3
-            activated_y3, back_relu_w3 = self.relu(y3)
+            activated_y3 = self.relu(y3)
             result = activated_y3
 
-    return activated_y1, activated_y2, result, back_relu_w1, back_relu_w2, back_relu_w3
+            return activated_y1, activated_y2, result
 
-
-    def feedForward(self, x):
-        global activated_y1, activated_y2, result, back_relu_w1, back_relu_w2, activated_y3, back_relu_w3
-        if self.LOSS == LOSS_CROSSENTROPY:
-            y1 = np.dot(x, self.w1) + self.b1
-            if self.ACTIVATION == ACTIVATE_SIGMOID:
-                activated_y1 = self.sigmoid(y1)
-                back_relu_w1 = None
-                y2 = np.dot(activated_y1, self.w2) + self.b2
-                activated_y2 = self.sigmoid(y2)
-                back_relu_w2 = None
-                y3 = np.dot(activated_y2, self.w3) + self.b3
-                result = self.softmax(y3)
-                back_relu_w3 = None
-
-            elif self.ACTIVATION == ACTIVATE_RELU:
-                activated_y1, back_relu_w1 = self.relu(y1)
-                y2 = np.dot(activated_y1, self.w2) + self.b2
-                activated_y2, back_relu_w2 = self.relu(y2)
-                y3 = np.dot(activated_y2, self.w3) + self.b3
-                result = self.softmax(y3)
-                back_relu_w3 = None
-
-        elif self.LOSS == LOSS_MSE:
-            y1 = np.dot(x, self.w1) + self.b1
-            if self.ACTIVATION == ACTIVATE_SIGMOID:
-                activated_y1 = self.sigmoid(y1)
-                back_relu_w1 = None
-                y2 = np.dot(activated_y1, self.w2) + self.b2
-                activated_y2 = self.sigmoid(y2)
-                back_relu_w2 = None
-                y3 = np.dot(activated_y2, self.w3) + self.b3
-                activated_y3 = self.sigmoid(y3)
-                back_relu_w3 = None
-                result = activated_y3
-
-            elif self.ACTIVATION == ACTIVATE_RELU:
-                activated_y1, back_relu_w1 = self.relu(y1)
-                y2 = np.dot(activated_y1, self.w2) + self.b2
-                activated_y2, back_relu_w2 = self.relu(y2)
-                y3 = np.dot(activated_y2, self.w3) + self.b3
-                activated_y3, back_relu_w3 = self.relu(y3)
-                result = activated_y3
-
-        return activated_y1, activated_y2, result, back_relu_w1, back_relu_w2, back_relu_w3
-    
-def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w2, back_relu_w3):
-    global d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
+def backpropagation(self, x, labelY, out1, out2, out3):
 
     if self.LOSS == LOSS_CROSSENTROPY:
         d_e = (out3 - labelY)
@@ -263,13 +221,18 @@ def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w
             d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
                 np.matmul(np.matmul(d_e, self.w3.T) * self.back_sigmoid(out2), self.w2.T) * self.back_sigmoid(
                     out1))
+            return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
         elif self.ACTIVATION == ACTIVATE_RELU:
-            d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
-            d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.matmul(d_e, self.w3.T) * back_relu_w2)
-            d_w1 = x.T.dot(np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+            d_w2 = out1.T.dot(np.matmul(d_e, self.w3.T) * self.back_relu(out2))
+            d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                np.matmul(d_e, self.w3.T) * self.back_relu(out2))
+            d_w1 = x.T.dot(np.matmul(np.matmul(d_e, self.w3.T) * self.back_relu(out2),
+                                     self.w2.T) * self.back_relu(out1))
             d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-                np.matmul(np.matmul(d_e, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                np.matmul(np.matmul(d_e, self.w3.T) * self.back_relu(out2),
+                          self.w2.T) * self.back_relu(out1))
+            return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
     elif self.LOSS == LOSS_MSE:
         e = (out3 - labelY)
@@ -288,43 +251,37 @@ def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w
                 np.dot(np.dot(e * self.back_sigmoid(out3), self.w3.T) * self.back_sigmoid(out2),
                        self.w2.T) * self.back_sigmoid(out1))
 
-            # calculate d_w3 with init_weight10
-            # d_w3 = out2.T.dot(e * self.back_sigmoid(out3))
-            # d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * self.back_sigmoid(out3))
-            # # calculate d_w2
-            # d_w2 = out1.T.dot(np.dot(e, self.w3.T) * self.back_sigmoid(out2))
-            # d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-            #     np.dot(e, self.w3.T) * self.back_sigmoid(out2))
-            # # calculate d_w1
-            # d_w1 = x.T.dot(np.dot(np.dot(e, self.w3.T),
-            #                       self.w2.T) * self.back_sigmoid(out1))
-            # d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-            #     np.dot(np.dot(e, self.w3.T),
-            #            self.w2.T) * self.back_sigmoid(out1))
+            return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
         elif self.ACTIVATION == ACTIVATE_RELU:
             # calculate d_w3
-            d_w3 = out2.T.dot(e * back_relu_w3)
-            d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * back_relu_w3)
+            d_w3 = out2.T.dot(e * self.back_relu(out3))
+            d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * self.back_relu(out3))
             # calculate d_w2
-            d_w2 = out1.T.dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2)
-            d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2)
+            d_w2 = out1.T.dot(
+                np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(out2))
+            d_b2 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
+                np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(out2))
             # calculate d_w1
-            d_w1 = x.T.dot(np.dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+            d_w1 = x.T.dot(np.dot(
+                np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(out2),
+                self.w2.T) * self.back_relu(out1))
             d_b1 = np.ones(shape=[1, self.BATCH_SIZE]).dot(
-                np.dot(np.dot(e * back_relu_w3, self.w3.T) * back_relu_w2, self.w2.T) * back_relu_w1)
+                np.dot(np.dot(e * self.back_relu(out3), self.w3.T) * self.back_relu(
+                    out2), self.w2.T) * self.back_relu(out1))
 
-    return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
+            return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
  ~~~
  
-   - Update calculate (gradient-descent, Adagrad, Adam)  
-  Calculate weights update.
-  
-  _If the optimizer is Adagrad, calculate the additional params gt for all weights.  
-  If the optimizer is Adam, calculate the additional params mt, vt for all weights._  
-  
-  
-  ![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/algorithm-01.png?raw=true)  
+- Update calculate (gradient-descent, Adagrad, Adam)  
+Calculate weights update.
+
+_If the optimizer is Momentum, calculate the additional params momentum._  
+_If the optimizer is Adagrad, calculate the additional params gt for all weights._  
+_If the optimizer is Adam, calculate the additional params mt, vt for all weights._  
+
+
+![Result of assigmentA](./images/algorithm-01.png)  
   
   
  ~~~
@@ -424,7 +381,7 @@ def backpropagation(self, x, labelY, out1, out2, out3, back_relu_w1, back_relu_w
 First, setting the params for data using config dic data.   
 This config has many params and you can change the `epoch`, `learning_rate`, `batch_size`, `activation`, `optimizer`, etc...  
 ~~~
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 3000,
                                    'batch_size': 60000,
                                    'learning_rate': 1e-6,
                                    'random_seed': 42,
@@ -484,7 +441,7 @@ dataManager = data_manager()
 
 - network_assignment_A(batch, sigmoid activation, MSE loss, momentum)
 ~~~
-INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
+INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 3000,
                                    'batch_size': 60000,
                                    'learning_rate': 1e-6,
                                    'random_seed': 42,
@@ -497,20 +454,52 @@ INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 1000,
                       
                    
 #result.   
---------------------------------------------
-============== EPOCH 997 START ==============
-============== EPOCH 997 END ================
-train accuracy : 0.8319; loss : 0.0176, test accuracy : 0.842; loss : 0.0172
-============== EPOCH 998 START ==============
-============== EPOCH 998 END ================
-train accuracy : 0.8321; loss : 0.0176, test accuracy : 0.842; loss : 0.0172
-============== EPOCH 999 START ==============
-============== EPOCH 999 END ================
-train accuracy : 0.8323; loss : 0.0176, test accuracy : 0.843; loss : 0.0172
-============== EPOCH 1000 START ==============
-============== EPOCH 1000 END ================
-train accuracy : 0.8325; loss : 0.0176, test accuracy : 0.843; loss : 0.0172                                       
+============== EPOCH 2996 START ==============
+============== EPOCH 2996 END ================
+train accuracy : 0.8768; loss : 0.0125, test accuracy : 0.883; loss : 0.0121
+============== EPOCH 2997 START ==============
+============== EPOCH 2997 END ================
+train accuracy : 0.8768; loss : 0.0125, test accuracy : 0.883; loss : 0.0121
+============== EPOCH 2998 START ==============
+============== EPOCH 2998 END ================
+train accuracy : 0.8768; loss : 0.0125, test accuracy : 0.883; loss : 0.0121
+============== EPOCH 2999 START ==============
+============== EPOCH 2999 END ================
+train accuracy : 0.8768; loss : 0.0125, test accuracy : 0.883; loss : 0.0121
+============== EPOCH 3000 START ==============
+============== EPOCH 3000 END ================
+train accuracy : 0.8768; loss : 0.0125, test accuracy : 0.883; loss : 0.0121                                    
 ~~~
-![Result of assigmentA](./images/SIGMOID_MOMENTUM_MSE_BATCH.png)  
+![Result of assigmentA](./images/INFO_SIGMOID_MOMENTUM_MSE_BATCH.png)  
+
+- network_assignment_B(batch, Relu activation, MSE loss, momentum)
+~~~
+INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
+                          'batch_size': 60000,
+                          'learning_rate': 1e-6,
+                          'random_seed': 42,
+                          'train_dataset_size': 60000,
+                          'test_dataset_size': 10000,
+                          'momentum': 0.8,
+                          'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                          'activation': nn.model.ACTIVATE_RELU,
+                          'loss': nn.model.LOSS_MSE}
+                      
+                   
+#result.   
+============== EPOCH 97 START ==============
+============== EPOCH 97 END ================
+train accuracy : 0.8948; loss : 0.0115, test accuracy : 0.899; loss : 0.0112
+============== EPOCH 98 START ==============
+============== EPOCH 98 END ================
+train accuracy : 0.895; loss : 0.0115, test accuracy : 0.899; loss : 0.0111
+============== EPOCH 99 START ==============
+============== EPOCH 99 END ================
+train accuracy : 0.8953; loss : 0.0115, test accuracy : 0.899; loss : 0.0111
+============== EPOCH 100 START ==============
+============== EPOCH 100 END ================
+train accuracy : 0.8956; loss : 0.0115, test accuracy : 0.899; loss : 0.0111                               
+~~~
+![Result of assigmentA](./images/INFO_RELU_GD_MSE_BATCH.png)  
 
 
