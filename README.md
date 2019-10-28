@@ -11,7 +11,7 @@ _This project can be divided to 4 parts_
   
 ---  
 
-1. Build Neural network with out `tensor-flow`.  
+1. Build Neural network without `tensor-flow`.  
 (In my case, just used `scikit-learn` for load data.)
 
 2. Test the Network by **changing the activation function**.  
