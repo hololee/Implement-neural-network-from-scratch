@@ -38,10 +38,16 @@ _This project can be divided to 4 parts_
   │   │
   │   └─ -tools.py : Plotting tools.
   │
-  ├─ -assignment.py : main stream of this project.
+  ├ -test : Test folder.
+  │   │
+  │   ├─ -question_2layer_sc.py : Using the 2layer train test.
+  │   │
+  │   ├─ -tensorflow_test.py : Check the scratch network by using the tensorflow.s
+  │   │
+  │   └─ -ema_test.py : Before constructing the Adam optimizer, I need to understand how calculat the Expotential moving average.
+  │                     This is the test of caculating the ema. 
   │
-  └─ -ema_test.py : Before constructing the Adam optimizer, i need to understand how calculat the Expotential moving average.
-                    This is the test of caculating the ema. 
+  └─ -assignment.py : Main SCRIPT of this project.
 ~~~
  
 ---
