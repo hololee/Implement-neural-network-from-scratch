@@ -38,7 +38,7 @@ _This project can be divided to 4 parts_
   │   │
   │   └─ -tools.py : Plotting tools.
   │
-  ├ -test : Test folder.
+  ├─ -test : Test folder.
   │   │
   │   ├─ -question_2layer_sc.py : Using the 2layer train test.
   │   │
