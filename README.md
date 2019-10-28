@@ -145,15 +145,18 @@ def back_sigmoid(self, x):
  ~~~  
  
   - ReLU activation model  
- This is for calculate `relu` feedfoward and derivative of sigmoid.
+ This is for calculate `ReLU` feedfoward and derivative of ReLU(Actually it is not derivative).
  ~~~
-# included back propagation.
-def relu(self, x):
-    back_relu = np.zeros(x.shape)
-    back_relu[np.where(x > 0)] = 1
-    x[np.where(x <= 0)] = 0
-    
-    return x, back_relu
+    def relu(self, x):
+        array = np.copy(x)
+        array[array < 0] = 0
+        return array
+
+    def back_relu(self, x):
+        array = np.copy(x)
+        array[array >= 0] = 1
+        array[array < 0] = 0
+        return array
  ~~~
  
    - Feedforward & backpropagation calculate  

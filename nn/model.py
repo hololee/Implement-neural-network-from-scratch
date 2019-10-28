@@ -84,7 +84,6 @@ class NeuralNetwork:
         array = np.copy(x)
         return array * (1 - array)
 
-    # included back propagation.
     def relu(self, x):
         array = np.copy(x)
         array[array < 0] = 0
