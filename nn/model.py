@@ -201,6 +201,8 @@ class NeuralNetwork:
                 return d_w1, d_w2, d_w3, d_b1, d_b2, d_b3
 
             elif self.ACTIVATION == ACTIVATE_RELU:
+                # if using the sigmoid at the las layer, accuracy will be increased because sigmoid make the output 0 to 1
+
                 # calculate d_w3
                 d_w3 = out2.T.dot(e * self.back_relu(out3))
                 d_b3 = np.ones(shape=[1, self.BATCH_SIZE]).dot(e * self.back_relu(out3))
