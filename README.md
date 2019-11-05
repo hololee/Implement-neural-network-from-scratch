@@ -1,5 +1,6 @@
 <h1>Assignment-mid-term</h1>  
 
+_+ updated(19.11.06) : Update test results of mini-batch, stochastic train._   
 _+ updated(19.10.27) : Update test results and figures._  
 _+ updated(19.10.26) : Add bias and MSE loss function to NetworkModel._  
 _+ updated(19.10.24) : printed loss is changed form `MSE` to `Crossentropy` loss and momentum updated. and printed loss can be changed to MSE._
@@ -409,7 +410,7 @@ Next, define network_model and load dataManager.
 network_model = network(configure=config_assignmentD_ADAM, h1=256, h2=256)
 dataManager = data_manager()
 ~~~
-![Result of assigmentA](https://github.com/hololee/assignment-mid-term/blob/master/images/network-01.png?raw=true)  
+![Result of assigmentA](./images/network-01.png)  
 
 <br/>
 
