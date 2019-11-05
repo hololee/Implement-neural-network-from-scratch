@@ -509,6 +509,70 @@ train accuracy : 0.8953; loss : 0.0115, test accuracy : 0.899; loss : 0.0111
 ============== EPOCH 100 END ================
 train accuracy : 0.8956; loss : 0.0115, test accuracy : 0.899; loss : 0.0111                               
 ~~~
-![Result of assigmentA](./images/INFO_RELU_GD_MSE_BATCH.png)  
+![Result of assigmentB](./images/INFO_RELU_GD_MSE_BATCH.png)  
+
+
+- network_assignment_C_1(minibatch, ReLU activation, MSE loss, momentum)
+~~~
+INFO_RELU_GD_MSE_MINIBATCH = {'total_epoch': 100,
+                          'batch_size': 1000,
+                          'learning_rate': 1e-6,
+                          'random_seed': 42,
+                          'train_dataset_size': 60000,
+                          'test_dataset_size': 10000,
+                          'momentum': 0.8,
+                          'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                          'activation': nn.model.ACTIVATE_RELU,
+                          'loss': nn.model.LOSS_MSE}
+                      
+                   
+#result.   
+============== EPOCH 97 START ==============
+============== EPOCH 97 END ================
+train accuracy : 0.8971; loss : 0.0115, test accuracy : 0.904; loss : 0.0111
+============== EPOCH 98 START ==============
+============== EPOCH 98 END ================
+train accuracy : 0.8973; loss : 0.0115, test accuracy : 0.904; loss : 0.0111
+============== EPOCH 99 START ==============
+============== EPOCH 99 END ================
+train accuracy : 0.8974; loss : 0.0114, test accuracy : 0.905; loss : 0.011
+============== EPOCH 100 START ==============
+============== EPOCH 100 END ================
+train accuracy : 0.8975; loss : 0.0114, test accuracy : 0.905; loss : 0.011                            
+~~~
+![Result of assigmentC](./images/INFO_RELU_GD_MSE_MINIBATCH.png)  
+
+
+
+- network_assignment_C_2(stochastic, ReLU activation, MSE loss, momentum)
+~~~
+INFO_RELU_GD_MSE_STOCHASTIC = {'total_epoch': 50,
+                               'batch_size': 1,
+                               'learning_rate': 1e-6,
+                               'random_seed': 42,
+                               'train_dataset_size': 60000,
+                               'test_dataset_size': 10000,
+                               'momentum': 0.8,
+                               'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                               'activation': nn.model.ACTIVATE_RELU,
+                               'loss': nn.model.LOSS_MSE}
+                      
+                   
+#result.   
+============== EPOCH 47 START ==============
+============== EPOCH 47 END ================
+train accuracy : 0.8771; loss : 0.0132, test accuracy : 0.886; loss : 0.0127
+============== EPOCH 48 START ==============
+============== EPOCH 48 END ================
+train accuracy : 0.8777; loss : 0.0131, test accuracy : 0.886; loss : 0.0126
+============== EPOCH 49 START ==============
+============== EPOCH 49 END ================
+train accuracy : 0.8781; loss : 0.0131, test accuracy : 0.887; loss : 0.0125
+============== EPOCH 50 START ==============
+============== EPOCH 50 END ================
+train accuracy : 0.8786; loss : 0.013, test accuracy : 0.887; loss : 0.0125
+                          
+~~~
+![Result of assigmentC](./images/INFO_RELU_GD_MSE_STOCHASTIC.png)  
 
 

@@ -23,7 +23,6 @@ INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 3000,
                                    'activation': nn.model.ACTIVATE_SIGMOID,
                                    'loss': nn.model.LOSS_MSE}
 
-#1e-6 working well
 INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'batch_size': 60000,
                           'learning_rate': 1e-6,
@@ -35,8 +34,30 @@ INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'activation': nn.model.ACTIVATE_RELU,
                           'loss': nn.model.LOSS_MSE}
 
+INFO_RELU_GD_MSE_MINIBATCH = {'total_epoch': 100,
+                              'batch_size': 1000,
+                              'learning_rate': 1e-6,
+                              'random_seed': 42,
+                              'train_dataset_size': 60000,
+                              'test_dataset_size': 10000,
+                              'momentum': 0.8,
+                              'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                              'activation': nn.model.ACTIVATE_RELU,
+                              'loss': nn.model.LOSS_MSE}
+
+INFO_RELU_GD_MSE_STOCHASTIC = {'total_epoch': 50,
+                               'batch_size': 1,
+                               'learning_rate': 1e-6,
+                               'random_seed': 42,
+                               'train_dataset_size': 60000,
+                               'test_dataset_size': 10000,
+                               'momentum': 0.8,
+                               'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
+                               'activation': nn.model.ACTIVATE_RELU,
+                               'loss': nn.model.LOSS_MSE}
+
 # set config.
-current_config = INFO_RELU_GD_MSE_BATCH
+current_config = INFO_RELU_GD_MSE_STOCHASTIC
 
 #
 # config_assignmentA_MOMENTUM_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1,
