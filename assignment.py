@@ -1,9 +1,9 @@
 import numpy as np
 # my class
-import nn.model
-import nn.tools as tool
-from nn.model import NeuralNetwork as network
-from nn.datas import DataManager as data_manager
+import fcn.model
+import fcn.tools as tool
+from fcn.model import NeuralNetwork as network
+from fcn.datas import DataManager as data_manager
 
 # data stack for plotting.
 train_acc = []
@@ -19,9 +19,9 @@ INFO_SIGMOID_MOMENTUM_MSE_BATCH = {'total_epoch': 3000,
                                    'train_dataset_size': 60000,
                                    'test_dataset_size': 10000,
                                    'momentum': 0.8,
-                                   'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
-                                   'activation': nn.model.ACTIVATE_SIGMOID,
-                                   'loss': nn.model.LOSS_MSE}
+                                   'optimizer': fcn.model.OPTIMIZER_GD_MOMENTUM,
+                                   'activation': fcn.model.ACTIVATE_SIGMOID,
+                                   'loss': fcn.model.LOSS_MSE}
 
 INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'batch_size': 60000,
@@ -30,9 +30,9 @@ INFO_RELU_GD_MSE_BATCH = {'total_epoch': 100,
                           'train_dataset_size': 60000,
                           'test_dataset_size': 10000,
                           'momentum': 0.8,
-                          'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
-                          'activation': nn.model.ACTIVATE_RELU,
-                          'loss': nn.model.LOSS_MSE}
+                          'optimizer': fcn.model.OPTIMIZER_GD_MOMENTUM,
+                          'activation': fcn.model.ACTIVATE_RELU,
+                          'loss': fcn.model.LOSS_MSE}
 
 INFO_RELU_GD_MSE_MINIBATCH = {'total_epoch': 100,
                               'batch_size': 1000,
@@ -41,9 +41,9 @@ INFO_RELU_GD_MSE_MINIBATCH = {'total_epoch': 100,
                               'train_dataset_size': 60000,
                               'test_dataset_size': 10000,
                               'momentum': 0.8,
-                              'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
-                              'activation': nn.model.ACTIVATE_RELU,
-                              'loss': nn.model.LOSS_MSE}
+                              'optimizer': fcn.model.OPTIMIZER_GD_MOMENTUM,
+                              'activation': fcn.model.ACTIVATE_RELU,
+                              'loss': fcn.model.LOSS_MSE}
 
 INFO_RELU_GD_MSE_STOCHASTIC = {'total_epoch': 50,
                                'batch_size': 1,
@@ -52,9 +52,9 @@ INFO_RELU_GD_MSE_STOCHASTIC = {'total_epoch': 50,
                                'train_dataset_size': 60000,
                                'test_dataset_size': 10000,
                                'momentum': 0.8,
-                               'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
-                               'activation': nn.model.ACTIVATE_RELU,
-                               'loss': nn.model.LOSS_MSE}
+                               'optimizer': fcn.model.OPTIMIZER_GD_MOMENTUM,
+                               'activation': fcn.model.ACTIVATE_RELU,
+                               'loss': fcn.model.LOSS_MSE}
 
 # set config.
 current_config = INFO_RELU_GD_MSE_STOCHASTIC
@@ -63,54 +63,54 @@ current_config = INFO_RELU_GD_MSE_STOCHASTIC
 # config_assignmentA_MOMENTUM_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1,
 #                                             'random_seed': 42,
 #                                             'train_dataset_size': 60000, 'test_dataset_size': 10000, 'momentum': 0.9,
-#                                             'optimizer': nn.model.OPTIMIZER_GD_MOMENTUM,
-#                                             'activation': nn.model.ACTIVATE_SIGMOID, 'loss': nn.model.LOSS_CROSSENTROPY}
+#                                             'optimizer': fcn.model.OPTIMIZER_GD_MOMENTUM,
+#                                             'activation': fcn.model.ACTIVATE_SIGMOID, 'loss': fcn.model.LOSS_CROSSENTROPY}
 #
 # config_assignmentA_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1, 'random_seed': 42,
 #                                    'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                    'optimizer': nn.model.OPTIMIZER_GD,
-#                                    'activation': nn.model.ACTIVATE_SIGMOID, 'loss': nn.model.LOSS_CROSSENTROPY}
+#                                    'optimizer': fcn.model.OPTIMIZER_GD,
+#                                    'activation': fcn.model.ACTIVATE_SIGMOID, 'loss': fcn.model.LOSS_CROSSENTROPY}
 #
 # config_assignmentB_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1, 'random_seed': 42,
 #                                    'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                    'optimizer': nn.model.OPTIMIZER_GD,
-#                                    'activation': nn.model.ACTIVATE_RELU, 'loss': nn.model.LOSS_CROSSENTROPY}
+#                                    'optimizer': fcn.model.OPTIMIZER_GD,
+#                                    'activation': fcn.model.ACTIVATE_RELU, 'loss': fcn.model.LOSS_CROSSENTROPY}
 #
 # config_assignmentC_MINI_BATCH_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1,
 #                                               'random_seed': 42,
 #                                               'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                               'optimizer': nn.model.OPTIMIZER_GD,
-#                                               'activation': nn.model.ACTIVATE_RELU, 'loss': nn.model.LOSS_CROSSENTROPY}
+#                                               'optimizer': fcn.model.OPTIMIZER_GD,
+#                                               'activation': fcn.model.ACTIVATE_RELU, 'loss': fcn.model.LOSS_CROSSENTROPY}
 #
 # config_assignmentC_BATCH_CROSSENTROPY = {'total_epoch': 80, 'batch_size': 60000, 'learning_rate': 0.1,
 #                                          'random_seed': 42,
 #                                          'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                          'optimizer': nn.model.OPTIMIZER_GD,
-#                                          'activation': nn.model.ACTIVATE_RELU, 'loss': nn.model.LOSS_CROSSENTROPY}
+#                                          'optimizer': fcn.model.OPTIMIZER_GD,
+#                                          'activation': fcn.model.ACTIVATE_RELU, 'loss': fcn.model.LOSS_CROSSENTROPY}
 #
 # config_assignmentC_STOCHASTIC_CROSSENTROPY = {'total_epoch': 10, 'batch_size': 1, 'learning_rate': 0.01,
 #                                               'random_seed': 42,
 #                                               'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                               'optimizer': nn.model.OPTIMIZER_GD,
-#                                               'activation': nn.model.ACTIVATE_RELU, 'loss': nn.model.LOSS_CROSSENTROPY}
+#                                               'optimizer': fcn.model.OPTIMIZER_GD,
+#                                               'activation': fcn.model.ACTIVATE_RELU, 'loss': fcn.model.LOSS_CROSSENTROPY}
 #
 # config_assignmentD_ADAGRAD_CROSSENTROPY = {'total_epoch': 30, 'batch_size': 1000, 'learning_rate': 0.005,
 #                                            'random_seed': 42,
 #                                            'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                            'optimizer': nn.model.OPTIMIZER_ADAGRAD,
-#                                            'activation': nn.model.ACTIVATE_RELU, 'loss': nn.model.LOSS_CROSSENTROPY,
+#                                            'optimizer': fcn.model.OPTIMIZER_ADAGRAD,
+#                                            'activation': fcn.model.ACTIVATE_RELU, 'loss': fcn.model.LOSS_CROSSENTROPY,
 #                                            'epsilon': 1e-5}
 #
 # config_assignmentD_ADAM_CROSSENTROPY = {'total_epoch': 30, 'batch_size': 1000, 'learning_rate': 0.005,
 #                                         'random_seed': 42,
 #                                         'train_dataset_size': 60000, 'test_dataset_size': 10000,
-#                                         'optimizer': nn.model.OPTIMIZER_ADAM,
-#                                         'activation': nn.model.ACTIVATE_RELU, 'loss': nn.model.LOSS_CROSSENTROPY,
+#                                         'optimizer': fcn.model.OPTIMIZER_ADAM,
+#                                         'activation': fcn.model.ACTIVATE_RELU, 'loss': fcn.model.LOSS_CROSSENTROPY,
 #                                         'beta1': 0.9,
 #                                         'beta2': 0.999,
 #                                         'epsilon': 1e-8}
 
-# define network nn.
+# define network fcn.
 network_model = network(configure=current_config, h1=256, h2=256)
 dataManager = data_manager()
 

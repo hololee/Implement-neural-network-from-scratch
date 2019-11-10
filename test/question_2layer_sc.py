@@ -3,7 +3,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.datasets import fetch_openml
 
 
-# Network nn class.
+# Network fcn class.
 class NeuralNetwork:
     # config data.
     TOTAL_EPOCH = 15
@@ -92,7 +92,7 @@ class NeuralNetwork:
 # fix the random value.
 np.random.seed(NeuralNetwork.SEED)
 
-# define network nn.
+# define network fcn.
 network_model = NeuralNetwork(learning_rate=NeuralNetwork.LEARNING_RATE)
 
 # using mini-batch
