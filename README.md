@@ -577,3 +577,70 @@ train accuracy : 0.8786; loss : 0.013, test accuracy : 0.887; loss : 0.0125
 ![Result of assigmentC](./images/INFO_RELU_GD_MSE_STOCHASTIC.png)  
 
 
+
+- network_assignment_D_1(mini-batch, ReLU activation, MSE loss, Adagrad)
+~~~
+INFO_RELU_ADAGRAD_MSE_MINIBATCH = {'total_epoch': 50,
+                                   'batch_size': 1000,
+                                   'learning_rate': 1e-3,
+                                   'random_seed': 42,
+                                   'train_dataset_size': 60000,
+                                   'test_dataset_size': 10000,
+                                   'optimizer': fcn.model.OPTIMIZER_ADAGRAD,
+                                   'epsilon': 1e-5,
+                                   'activation': fcn.model.ACTIVATE_RELU,
+                                   'loss': fcn.model.LOSS_MSE}
+
+                      
+#result.   
+============== EPOCH 47 START ==============
+============== EPOCH 47 END ================
+train accuracy : 0.9209; loss : 0.00937, test accuracy : 0.92; loss : 0.00932
+============== EPOCH 48 START ==============
+============== EPOCH 48 END ================
+train accuracy : 0.921; loss : 0.00935, test accuracy : 0.92; loss : 0.0093
+============== EPOCH 49 START ==============
+============== EPOCH 49 END ================
+train accuracy : 0.9213; loss : 0.00932, test accuracy : 0.92; loss : 0.00928
+============== EPOCH 50 START ==============
+============== EPOCH 50 END ================
+train accuracy : 0.9215; loss : 0.0093, test accuracy : 0.92; loss : 0.00925                     
+~~~
+![Result of assigmentC](./images/INFO_RELU_ADAGRAD_MSE_MINIBATCH.png)  
+
+
+
+
+
+- network_assignment_D_2(mini-batch, ReLU activation, MSE loss, Adam)
+~~~
+INFO_RELU_ADAM_MSE_MINIBATCH = {'total_epoch': 50,
+                                'batch_size': 1000,
+                                'learning_rate': 1e-3,
+                                'random_seed': 42,
+                                'train_dataset_size': 60000,
+                                'test_dataset_size': 10000,
+                                'optimizer': fcn.model.OPTIMIZER_ADAGRAD,
+                                'activation': fcn.model.ACTIVATE_RELU,
+                                'loss': fcn.model.LOSS_MSE,
+                                'beta1': 0.9,
+                                'beta2': 0.999,
+                                'epsilon': 1e-8
+                                }
+                      
+#result.   
+============== EPOCH 47 START ==============
+============== EPOCH 47 END ================
+train accuracy : 0.9174; loss : 0.00955, test accuracy : 0.919; loss : 0.00943
+============== EPOCH 48 START ==============
+============== EPOCH 48 END ================
+train accuracy : 0.9176; loss : 0.00952, test accuracy : 0.92; loss : 0.00941
+============== EPOCH 49 START ==============
+============== EPOCH 49 END ================
+train accuracy : 0.9178; loss : 0.0095, test accuracy : 0.92; loss : 0.00938
+============== EPOCH 50 START ==============
+============== EPOCH 50 END ================
+train accuracy : 0.918; loss : 0.00947, test accuracy : 0.92; loss : 0.00936               
+~~~
+![Result of assigmentC](./images/INFO_RELU_ADAM_MSE_MINIBATCH.png)  
+

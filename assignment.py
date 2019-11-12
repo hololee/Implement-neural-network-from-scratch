@@ -56,8 +56,33 @@ INFO_RELU_GD_MSE_STOCHASTIC = {'total_epoch': 50,
                                'activation': fcn.model.ACTIVATE_RELU,
                                'loss': fcn.model.LOSS_MSE}
 
+INFO_RELU_ADAGRAD_MSE_MINIBATCH = {'total_epoch': 50,
+                                   'batch_size': 1000,
+                                   'learning_rate': 1e-3,
+                                   'random_seed': 42,
+                                   'train_dataset_size': 60000,
+                                   'test_dataset_size': 10000,
+                                   'optimizer': fcn.model.OPTIMIZER_ADAGRAD,
+                                   'epsilon': 1e-5,
+                                   'activation': fcn.model.ACTIVATE_RELU,
+                                   'loss': fcn.model.LOSS_MSE}
+
+INFO_RELU_ADAM_MSE_MINIBATCH = {'total_epoch': 50,
+                                'batch_size': 1000,
+                                'learning_rate': 1e-3,
+                                'random_seed': 42,
+                                'train_dataset_size': 60000,
+                                'test_dataset_size': 10000,
+                                'optimizer': fcn.model.OPTIMIZER_ADAGRAD,
+                                'activation': fcn.model.ACTIVATE_RELU,
+                                'loss': fcn.model.LOSS_MSE,
+                                'beta1': 0.9,
+                                'beta2': 0.999,
+                                'epsilon': 1e-8
+                                }
+
 # set config.
-current_config = INFO_RELU_GD_MSE_STOCHASTIC
+current_config = INFO_RELU_ADAM_MSE_MINIBATCH
 
 #
 # config_assignmentA_MOMENTUM_CROSSENTROPY = {'total_epoch': 50, 'batch_size': 1000, 'learning_rate': 0.1,
