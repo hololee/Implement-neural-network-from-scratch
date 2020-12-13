@@ -1,4 +1,4 @@
-<h1>Assignment-mid-term</h1>  
+<h1>Implement-neural-network-from-scratch</h1>  
 
 _+ updated(19.11.12) : Update test results Adagrad, Adam optimizer._  
 _+ updated(19.11.06) : Update test results of mini-batch, stochastic train._   
